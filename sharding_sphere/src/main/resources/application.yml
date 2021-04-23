@@ -1,8 +1,24 @@
 server:
   port: 8081
 spring:
-  datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/db2020?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
-    username: root
-    password: root
+  main:
+    allow-bean-definition-overriding: true
+  shardingsphere:
+    datasource:
+      names: m1
+      m1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: root
+        password: root
+        url: jdbc:mysql://localhost:3306/course_db?serverTimezone=GMT%2B8
+    sharding:
+      tables:
+        course:
+          # 指定course表的分布情况，配置在哪个数据库里面，表的名称都是什么 P9 12:19
+          actual-data-nodes: m1.course_$->{1..2}
+#  datasource:
+#    driverClassName: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/course_db?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
+#    username: root
+#    password: root
