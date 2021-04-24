@@ -1,4 +1,4 @@
-package com.company;
+package com.company.sharding_sphere;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

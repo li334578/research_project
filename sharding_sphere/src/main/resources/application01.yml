@@ -5,39 +5,25 @@ spring:
     allow-bean-definition-overriding: true # 解决一个实体类对应了两张同样结构的表的问题
   shardingsphere:
     datasource:
-      names: m1,m2
+      names: m1
       m1:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
         username: root
         password: root
-        url: jdbc:mysql://localhost:3306/edu_db1?serverTimezone=GMT%2B8
-      m2:
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        username: root
-        password: root
-        url: jdbc:mysql://localhost:3306/edu_db2?serverTimezone=GMT%2B8
+        url: jdbc:mysql://localhost:3306/course_db?serverTimezone=GMT%2B8
     props:
       sql:
         show: true
     sharding:
-      #      default-database-strategy: # 指定所有表都按照这个规则
-      #        inline:
-      #          shading-column: user_id
-      #          algorithm-expression: m$->{user_id % 2 + 1}
       tables:
         course:
-          database-strategy:
-            inline:
-              sharding-column: user_id
-              algorithm-expression: m$->{user_id % 2 + 1}
           # 指定course表的分布情况，配置在哪个数据库里面，表的名称都是什么
-          actual-data-nodes: m$->{1..2}.course_$->{1..2}
+          actual-data-nodes: m1.course_$->{1..2}
           key-generator: # 指定主键cid的生成策略
             column: cid
             type: SNOWFLAKE
-          table-strategy: # 指定表分片策略
+          table-strategy: # 指定分片策略
             inline:
               sharding-column: cid
               algorithm-expression: course_$->{cid % 2 + 1}

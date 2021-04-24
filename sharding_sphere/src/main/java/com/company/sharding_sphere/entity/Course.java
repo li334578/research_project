@@ -1,6 +1,7 @@
 package com.company.sharding_sphere.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * @author : LiWenBo
@@ -9,6 +10,7 @@ import lombok.Data;
  * @date : 2021-04-22 21:10:16
  */
 @Data
+@ToString
 public class Course {
     private Long cid;
     private String cname;
