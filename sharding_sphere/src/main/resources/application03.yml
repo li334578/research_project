@@ -56,11 +56,6 @@ spring:
             inline:
               sharding-column: cid
               algorithm-expression: course_$->{cid % 2 + 1}
-        dic:
-          key-generator: # 指定主键cid的生成策略
-            column: dic_id
-            type: SNOWFLAKE
-      broadcast-tables: dic #公共表配置
 #  datasource:
 #    driverClassName: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/course_db?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
