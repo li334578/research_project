@@ -119,3 +119,31 @@ clone
 - 标记清除压缩
 ## 逃逸分析和栈上分配
 - 逃逸分析
+
+
+# 调优
+
+```
+jps
+ java process status
+ jps -l 主类全名
+ jps -m 运行传入主类的参数
+ jps -v 虚拟机参数
+jstat
+ 类加载、内存、垃圾收集、jit编译信息
+jinfo
+ 实时调整和查看虚拟机参数
+ -XX:[x/-]option
+ -XX:option=value
+jmap
+ jmap -dump:formart=b,file=filepath pid
+ jmap -histo pid
+jhat
+ JVM heap analysis Tool
+jstack
+
+jconsole
+
+printf %x 10
+```
+
