@@ -130,6 +130,7 @@ jps
  jps -m 运行传入主类的参数
  jps -v 虚拟机参数
 jstat
+ jstat -gcutil pid 1000
  类加载、内存、垃圾收集、jit编译信息
 jinfo
  实时调整和查看虚拟机参数
@@ -141,9 +142,12 @@ jmap
 jhat
  JVM heap analysis Tool
 jstack
+ jstack -l pid > xxx.txt
 
 jconsole
 
 printf %x 10
+
+-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/base
 ```
 
