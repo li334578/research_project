@@ -17,16 +17,10 @@ public class Cat extends Animal implements AnimalAction {
     private Integer catAge;
 
     public Cat() {
+        super("阿离", "英短");
+        this.catAge = 1;
     }
 
-    public Cat(Integer catAge) {
-        this.catAge = catAge;
-    }
-
-    public Cat(String name, String category, Integer catAge) {
-        super(name, category);
-        this.catAge = catAge;
-    }
 
     /**
      * 叫声
@@ -42,5 +36,32 @@ public class Cat extends Animal implements AnimalAction {
     @Override
     public void printName() {
         System.out.println(super.getName());
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    @Override
+    public void setName(String name) {
+        super.setName(name);
+    }
+
+    @Override
+    public String getCategory() {
+        return super.getCategory();
+    }
+
+    @Override
+    public void setCategory(String category) {
+        super.setCategory(category);
+    }
+
+    @Override
+    public String toString() {
+        return "Cat{" +
+                "catAge=" + catAge +
+                "} " + super.toString();
     }
 }

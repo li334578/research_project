@@ -20,16 +20,10 @@ public class Dog extends Animal implements AnimalAction {
     private Integer dogAge;
 
     public Dog() {
+        super("大黄", "斗牛");
+        this.dogAge = 2;
     }
 
-    public Dog(Integer dogAge) {
-        this.dogAge = dogAge;
-    }
-
-    public Dog(String name, String category, Integer dogAge) {
-        super(name, category);
-        this.dogAge = dogAge;
-    }
 
     /**
      * 叫声
@@ -45,5 +39,33 @@ public class Dog extends Animal implements AnimalAction {
     @Override
     public void printName() {
         System.out.println(super.getName());
+    }
+
+
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    @Override
+    public void setName(String name) {
+        super.setName(name);
+    }
+
+    @Override
+    public String getCategory() {
+        return super.getCategory();
+    }
+
+    @Override
+    public void setCategory(String category) {
+        super.setCategory(category);
+    }
+
+    @Override
+    public String toString() {
+        return "Dog{" +
+                "dogAge=" + dogAge +
+                "} " + super.toString();
     }
 }

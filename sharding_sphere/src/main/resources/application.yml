@@ -2,6 +2,10 @@ server:
   port: 8081
 spring:
   datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/new_test?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root
     redis:
       jedis:
         pool:
@@ -14,66 +18,61 @@ spring:
       timeout: 7200
   main:
     allow-bean-definition-overriding: true # 解决一个实体类对应了两张同样结构的表的问题
-  shardingsphere:
-    datasource:
-      names: m1,m2,m3
-      m1:
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        username: root
-        password: root
-        url: jdbc:mysql://localhost:3306/edu_db1?serverTimezone=GMT%2B8
-      m2:
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        username: root
-        password: root
-        url: jdbc:mysql://localhost:3306/edu_db2?serverTimezone=GMT%2B8
-      m3:
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        username: root
-        password: root
-        url: jdbc:mysql://localhost:3306/user_db?serverTimezone=GMT%2B8
-    props:
-      sql:
-        show: true
-    sharding:
-      #      default-database-strategy: # 指定所有表都按照这个规则
-      #        inline:
-      #          shading-column: user_id
-      #          algorithm-expression: m$->{user_id % 2 + 1}
-      tables:
-        t_user:
-          actual-data-nodes: m$->{3}.t_user
-          key-generator: # 指定主键cid的生成策略
-            column: user_id
-            type: SNOWFLAKE
-          table-strategy: # 指定表分片策略
-            inline:
-              sharding-column: user_id
-              algorithm-expression: t_user
-        course:
-          database-strategy:
-            inline:
-              sharding-column: user_id
-              algorithm-expression: m$->{user_id % 2 + 1}
-          # 指定course表的分布情况，配置在哪个数据库里面，表的名称都是什么
-          actual-data-nodes: m$->{1..2}.course_$->{1..2}
-          key-generator: # 指定主键cid的生成策略
-            column: cid
-            type: SNOWFLAKE
-          table-strategy: # 指定表分片策略
-            inline:
-              sharding-column: cid
-              algorithm-expression: course_$->{cid % 2 + 1}
-        dic:
-          key-generator: # 指定主键cid的生成策略
-            column: dic_id
-            type: SNOWFLAKE
-      broadcast-tables: dic #公共表配置
-#  datasource:
-#    driverClassName: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/course_db?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
-#    username: root
-#    password: root
+#  shardingsphere:
+#    datasource:
+#      names: m1,m2,m3
+#      m1:
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        username: root
+#        password: root
+#        url: jdbc:mysql://localhost:3306/edu_db1?serverTimezone=GMT%2B8
+#      m2:
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        username: root
+#        password: root
+#        url: jdbc:mysql://localhost:3306/edu_db2?serverTimezone=GMT%2B8
+#      m3:
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        username: root
+#        password: root
+#        url: jdbc:mysql://localhost:3306/user_db?serverTimezone=GMT%2B8
+#    props:
+#      sql:
+#        show: true
+#    sharding:
+#      #      default-database-strategy: # 指定所有表都按照这个规则
+#      #        inline:
+#      #          shading-column: user_id
+#      #          algorithm-expression: m$->{user_id % 2 + 1}
+#      tables:
+#        t_user:
+#          actual-data-nodes: m$->{3}.t_user
+#          key-generator: # 指定主键cid的生成策略
+#            column: user_id
+#            type: SNOWFLAKE
+#          table-strategy: # 指定表分片策略
+#            inline:
+#              sharding-column: user_id
+#              algorithm-expression: t_user
+#        course:
+#          database-strategy:
+#            inline:
+#              sharding-column: user_id
+#              algorithm-expression: m$->{user_id % 2 + 1}
+#          # 指定course表的分布情况，配置在哪个数据库里面，表的名称都是什么
+#          actual-data-nodes: m$->{1..2}.course_$->{1..2}
+#          key-generator: # 指定主键cid的生成策略
+#            column: cid
+#            type: SNOWFLAKE
+#          table-strategy: # 指定表分片策略
+#            inline:
+#              sharding-column: cid
+#              algorithm-expression: course_$->{cid % 2 + 1}
+#        dic:
+#          key-generator: # 指定主键cid的生成策略
+#            column: dic_id
+#            type: SNOWFLAKE
+#      broadcast-tables: dic #公共表配置

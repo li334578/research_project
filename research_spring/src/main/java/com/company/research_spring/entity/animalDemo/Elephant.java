@@ -16,15 +16,8 @@ public class Elephant extends Animal implements AnimalAction {
     private Integer eleAge;
 
     public Elephant() {
-    }
-
-    public Elephant(Integer eleAge) {
-        this.eleAge = eleAge;
-    }
-
-    public Elephant(String name, String category, Integer eleAge) {
-        super(name, category);
-        this.eleAge = eleAge;
+        super("big elephant", "象群");
+        this.eleAge = 8;
     }
 
     /**
@@ -41,5 +34,32 @@ public class Elephant extends Animal implements AnimalAction {
     @Override
     public void printName() {
         System.out.println(super.getName());
+    }
+
+    @Override
+    public String toString() {
+        return "Elephant{" +
+                "eleAge=" + eleAge +
+                "} " + super.toString();
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    @Override
+    public void setName(String name) {
+        super.setName(name);
+    }
+
+    @Override
+    public String getCategory() {
+        return super.getCategory();
+    }
+
+    @Override
+    public void setCategory(String category) {
+        super.setCategory(category);
     }
 }

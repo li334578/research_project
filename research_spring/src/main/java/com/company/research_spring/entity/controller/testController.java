@@ -19,7 +19,13 @@ public class testController {
 
     @GetMapping("/testResource")
     public String testResource() {
-        animalActionList.forEach(System.out::println);
+        animalActionList.forEach(item -> {
+            System.out.println(item);
+            System.out.println("======");
+            item.printName();
+            System.out.println("======");
+            item.voice();
+        });
         return "success";
     }
 }
