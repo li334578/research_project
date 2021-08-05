@@ -1,5 +1,6 @@
 package com.company.research_spring.entity.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.company.research_spring.entity.animalDemo.AnimalAction;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ public class testController {
     List<AnimalAction> animalActionList;
 
     @GetMapping("/testResource")
+    @SentinelResource("/testResource")
     public String testResource() {
         animalActionList.forEach(item -> {
             System.out.println(item);
