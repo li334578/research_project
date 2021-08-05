@@ -54,3 +54,7 @@ wms_frontend/node_modules/
 out/
 
 *.iml
+mvnw
+mvnw.cmd
+maven-wrapper.properties
+spring-configuration-metadata.json
