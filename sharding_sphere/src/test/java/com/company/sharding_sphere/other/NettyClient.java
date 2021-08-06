@@ -24,7 +24,7 @@ public class NettyClient {
         System.out.println("客户端启动");
         bootstrap.group(group);
         bootstrap.channel(NioSocketChannel.class);
-        bootstrap.handler(new NettyServerFilter());
+//        bootstrap.handler(new NettyServerFilter());
         // 连接服务器
         channel = bootstrap.connect(host, port).sync().channel();
         sendMsg();

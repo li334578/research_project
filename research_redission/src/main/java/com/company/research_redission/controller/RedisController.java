@@ -1,10 +1,9 @@
 package com.company.research_redission.controller;
 
+import com.company.research_redission.controller.dto.RedisPut;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -18,10 +17,18 @@ public class RedisController {
     @Resource
     private RedissonClient redissonClient;
 
-    @RequestMapping("/test1")
-    public String testMethod(@RequestParam("key") String key, @RequestParam("value") String value) {
-        RBucket<Object> bucket = redissonClient.getBucket(key);
-        bucket.set(value);
+    @PostMapping("/redis/putKeyAndValue")
+    public String testMethod(@RequestBody RedisPut redisPut) {
+        RBucket<Object> bucket = redissonClient.getBucket(redisPut.getKey());
+        bucket.set(redisPut.getValue());
         return "OK";
+    }
+
+
+    @GetMapping("/redis/getKey")
+    public String testMethod(@RequestParam("key") String key) {
+        RBucket<Object> bucket = redissonClient.getBucket(key);
+        System.out.println(bucket.get());
+        return (String) bucket.get();
     }
 }
