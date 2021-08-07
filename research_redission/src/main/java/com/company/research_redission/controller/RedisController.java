@@ -19,16 +19,17 @@ public class RedisController {
 
     @PostMapping("/redis/putKeyAndValue")
     public String testMethod(@RequestBody RedisPut redisPut) {
-        RBucket<Object> bucket = redissonClient.getBucket(redisPut.getKey());
+        RBucket<String> bucket = redissonClient.getBucket(redisPut.getKey());
         bucket.set(redisPut.getValue());
+        System.out.println(bucket.get());
         return "OK";
     }
 
 
     @GetMapping("/redis/getKey")
     public String testMethod(@RequestParam("key") String key) {
-        RBucket<Object> bucket = redissonClient.getBucket(key);
+        RBucket<String> bucket = redissonClient.getBucket(key);
         System.out.println(bucket.get());
-        return (String) bucket.get();
+        return bucket.get();
     }
 }
