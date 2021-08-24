@@ -58,3 +58,5 @@ mvnw
 mvnw.cmd
 maven-wrapper.properties
 spring-configuration-metadata.json
+.mvn/
+target/
