@@ -1,0 +1,12 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: lwb-test-sentinel
+  cloud:
+    sentinel:
+      eager: true
+      transport:
+          dashboard: 58.246.139.138:18111
+          clientIp: 192.168.10.20
