@@ -10,3 +10,13 @@ spring:
       transport:
           dashboard: 58.246.139.138:18111
           clientIp: 192.168.10.20
+
+# 异步线程配置
+async:
+  executor:
+    thread:
+      core_pool_size: 20 # 配置核心线程数
+      max_pool_size: 100 # 配置最大线程数
+      queue_capacity: 99999 # 配置队列大小
+      name:
+        prefix: async-service-  # 配置线程池中的线程的名称前缀

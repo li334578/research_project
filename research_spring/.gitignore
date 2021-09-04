@@ -53,6 +53,8 @@ wms_frontend/node_modules/
 
 out/
 
+target/
+
 *.iml
 mvnw
 mvnw.cmd
