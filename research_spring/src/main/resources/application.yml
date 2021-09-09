@@ -10,6 +10,11 @@ spring:
       transport:
           dashboard: 58.246.139.138:18111
           clientIp: 192.168.10.20
+  boot:
+    name: Jony
+
+
+testCoreNum:  4
 
 # 异步线程配置
 async:

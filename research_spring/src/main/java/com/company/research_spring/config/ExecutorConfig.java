@@ -3,15 +3,17 @@ package com.company.research_spring.config;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import javax.annotation.Resource;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author : LiWenBo
@@ -22,19 +24,29 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @EnableAsync
 @Data
-public class ExecutorConfig {
+public class ExecutorConfig implements EnvironmentPostProcessor {
     private static final Logger logger = LoggerFactory.getLogger(ExecutorConfig.class);
 
-
+    @Resource
+    private ThreadPoolTaskExecutor executor;
 
     @Bean(name = "asyncServiceExecutor")
     public Executor asyncServiceExecutor() {
-        return ThreadPoolTaskExecutorEnum.TheadPool.getThreadPoolTaskExecutor();
+        return executor;
     }
 
 
     @Bean(name = "executorService")
     public ExecutorService asyncExecutorService() {
-        return ThreadPoolTaskExecutorEnum.TheadPool.getThreadPoolTaskExecutor().getThreadPoolExecutor();
+        return executor.getThreadPoolExecutor();
+    }
+
+    @Override
+    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
+        System.out.println("postProcessEnvironment launch .... ");
+        String name = environment.getProperty("spring.boot.name");
+        System.out.println(name);
+        String testCoreNum = environment.getProperty("testCoreNum");
+        System.out.println(testCoreNum);
     }
 }

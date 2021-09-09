@@ -51,15 +51,17 @@ public class testController {
 
     @GetMapping("/asyncMethod2")
     public String asyncMethod2() {
-        executorService.submit(() -> {
-            System.out.println(Thread.currentThread().getName() + "正在执行任务...");
-            System.out.println(RandomUtil.randomString(6));
-            try {
-                Thread.sleep(1500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
+        for (int i = 0; i < 80; i++) {
+            executorService.submit(() -> {
+                System.out.println(Thread.currentThread().getName() + "正在执行任务...");
+                System.out.println(RandomUtil.randomString(6));
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
         return "OK";
     }
 }
