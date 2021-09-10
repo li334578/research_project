@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @Date: 2021年09月09日
  * @Description:
  */
-@Configuration
+//@Configuration
 public class ThreadPoolTaskExecutorBean {
     @Value("${async.executor.thread.core_pool_size}")
     private int corePoolSize;

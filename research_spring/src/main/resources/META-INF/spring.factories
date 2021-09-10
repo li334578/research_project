@@ -1,1 +1,2 @@
 org.springframework.boot.env.EnvironmentPostProcessor=com.company.research_spring.config.ExecutorConfig
+# org.springframework.beans.factory.config.BeanPostProcessor=com.company.research_spring.processor.MyBeanPostProcessor

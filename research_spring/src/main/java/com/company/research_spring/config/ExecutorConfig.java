@@ -27,18 +27,18 @@ import java.util.concurrent.ExecutorService;
 public class ExecutorConfig implements EnvironmentPostProcessor {
     private static final Logger logger = LoggerFactory.getLogger(ExecutorConfig.class);
 
-    @Resource
-    private ThreadPoolTaskExecutor executor;
+//    @Resource
+//    private ThreadPoolTaskExecutor executor;
 
     @Bean(name = "asyncServiceExecutor")
     public Executor asyncServiceExecutor() {
-        return executor;
+        return ThreadPoolTaskExecutorEnum.TheadPool.getThreadPoolTaskExecutor();
     }
 
 
     @Bean(name = "executorService")
     public ExecutorService asyncExecutorService() {
-        return executor.getThreadPoolExecutor();
+        return ThreadPoolTaskExecutorEnum.TheadPool.getThreadPoolTaskExecutor().getThreadPoolExecutor();
     }
 
     @Override
