@@ -58,3 +58,4 @@ mvnw
 mvnw.cmd
 maven-wrapper.properties
 spring-configuration-metadata.json
+/research_message_queue/.mvn/wrapper/

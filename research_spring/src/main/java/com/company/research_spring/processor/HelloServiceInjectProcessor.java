@@ -5,6 +5,8 @@ import com.company.research_spring.proxy.RoutingBeanProxyFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -17,7 +19,8 @@ import java.util.Map;
  * @Description:
  */
 @Component
-public class HelloServiceInjectProcessor implements BeanPostProcessor {
+public class HelloServiceInjectProcessor implements BeanPostProcessor, Ordered {
+
 
     @Resource
     private ApplicationContext applicationContext;
@@ -62,5 +65,10 @@ public class HelloServiceInjectProcessor implements BeanPostProcessor {
         } else {
             throw new IllegalArgumentException("Find more than 2 beans for type: " + type);
         }
+    }
+
+    @Override
+    public int getOrder() {
+        return 1;
     }
 }

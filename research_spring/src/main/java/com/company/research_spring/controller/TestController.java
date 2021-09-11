@@ -2,8 +2,10 @@ package com.company.research_spring.controller;
 
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.company.research_spring.entity.Student;
 import com.company.research_spring.entity.animalDemo.AnimalAction;
 import com.company.research_spring.service.AsyncService;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +28,12 @@ public class TestController {
 
     @Resource
     private ExecutorService executorService;
+
+    @Resource
+    private ApplicationContext applicationContext;
+
+    @Resource
+    private Student student;
 
     @GetMapping("/testResource")
     @SentinelResource("/testResource")
@@ -62,5 +70,13 @@ public class TestController {
             });
         }
         return "OK";
+    }
+
+    @GetMapping("/testBeanPostProcessor")
+    public void testBeanPostProcessor() {
+        Object student1 = applicationContext.getBean("student");
+        System.out.println(student1);
+        System.out.println("......... cut-off rule ........");
+        System.out.println(student);
     }
 }
