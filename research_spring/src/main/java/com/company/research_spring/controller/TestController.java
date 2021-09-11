@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @Author: liwenbo
@@ -18,7 +17,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @Description:
  */
 @RestController
-public class testController {
+public class TestController {
     @Resource
     List<AnimalAction> animalActionList;
 
