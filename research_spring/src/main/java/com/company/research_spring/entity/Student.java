@@ -1,5 +1,6 @@
 package com.company.research_spring.entity;
 
+import com.company.research_spring.markInterface.AddProperties;
 import lombok.Data;
 
 /**
@@ -8,13 +9,9 @@ import lombok.Data;
  * @Description:
  */
 @Data
-public class Student {
+public class Student implements AddProperties {
     private String name;
     private Integer age;
-
-    void init() {
-        System.out.println("initial method launch ...");
-    }
 
     @Override
     public String toString() {

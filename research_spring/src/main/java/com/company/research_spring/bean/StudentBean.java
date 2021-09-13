@@ -2,7 +2,7 @@ package com.company.research_spring.bean;
 
 import com.company.research_spring.entity.Student;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
  * @author : LiWenBo
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @description :
  * @date : 2021-09-11 17:56:19
  */
-@Configuration
+@Component
 public class StudentBean {
 
     @Bean

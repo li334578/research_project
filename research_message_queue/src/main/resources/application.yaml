@@ -2,8 +2,11 @@ spring:
   rabbitmq:
     host: localhost
     port: 5672
-    username: guest
-    password: guest
+    username: wenbo123
+    password: wenbo123
+    listener:
+      simple:
+        acknowledge-mode: manual
 
 
 rabbitmq:
