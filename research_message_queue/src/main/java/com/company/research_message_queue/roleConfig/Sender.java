@@ -12,4 +12,9 @@ public interface Sender {
      * 发送消息到MQ的指定queue
      * */
     void sendMessage(String queueName, String message);
+
+    /*
+     * 发送消息到MQ的指定queue
+     * */
+    void sendMessage(String virtualHost, String queueName, String message);
 }
