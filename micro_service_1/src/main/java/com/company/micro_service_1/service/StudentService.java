@@ -13,4 +13,6 @@ import java.util.List;
 public interface StudentService {
 
     List<Student> students();
+
+    Student student(Long id);
 }
