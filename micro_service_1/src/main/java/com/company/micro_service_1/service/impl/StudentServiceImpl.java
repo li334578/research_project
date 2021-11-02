@@ -1,5 +1,6 @@
 package com.company.micro_service_1.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.company.micro_service_1.bean.Student;
 import com.company.micro_service_1.mapper.StudentMapper;
 import com.company.micro_service_1.service.StudentService;
@@ -23,5 +24,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> students() {
         return studentMapper.selectList(null);
+    }
+
+    @Override
+    public Student student(Long id) {
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id",id);
+        return studentMapper.selectOne(queryWrapper);
     }
 }
