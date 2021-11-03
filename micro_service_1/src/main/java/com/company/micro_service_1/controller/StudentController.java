@@ -4,6 +4,7 @@ import com.company.micro_service_1.bean.Student;
 import com.company.micro_service_1.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +30,12 @@ public class StudentController {
     public void student(){
         List<Student> students = studentService.students();
         students.forEach(System.out::println);
+    }
+
+
+    @GetMapping("/{id}")
+    public void student(@PathVariable("id") Long id){
+        Student student = studentService.student(id);
+        System.out.println(student);
     }
 }
