@@ -15,4 +15,6 @@ public interface StudentService {
     List<Student> students();
 
     Student student(Long id);
+
+    void save(Student student);
 }
