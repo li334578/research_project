@@ -29,7 +29,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student student(Long id) {
         QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id",id);
+        queryWrapper.eq("id", id);
         return studentMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public void save(Student student) {
+        studentMapper.insert(student);
     }
 }
