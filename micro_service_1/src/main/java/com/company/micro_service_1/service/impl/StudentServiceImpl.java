@@ -1,6 +1,7 @@
 package com.company.micro_service_1.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.micro_service_1.bean.Student;
 import com.company.micro_service_1.mapper.StudentMapper;
 import com.company.micro_service_1.service.StudentService;
@@ -16,7 +17,7 @@ import java.util.List;
  * @date : 2021-10-24 19:56:49
  */
 @Service
-public class StudentServiceImpl implements StudentService {
+public class StudentServiceImpl extends ServiceImpl<StudentMapper,Student> implements StudentService {
 
     @Resource
     private StudentMapper studentMapper;
@@ -31,10 +32,5 @@ public class StudentServiceImpl implements StudentService {
         QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id);
         return studentMapper.selectOne(queryWrapper);
-    }
-
-    @Override
-    public void save(Student student) {
-        studentMapper.insert(student);
     }
 }
