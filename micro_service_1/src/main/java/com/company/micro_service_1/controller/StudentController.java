@@ -53,4 +53,10 @@ public class StudentController {
         BeanUtil.copyProperties(studentDto, copy);
         studentService.save(copy);
     }
+
+    @PostMapping("/")
+    public void updateStudent(@RequestBody StudentDto studentDto) {
+        Student bean = new Student();
+        studentService.update();
+    }
 }
