@@ -4,9 +4,11 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.lang.copier.Copier;
 import cn.hutool.core.util.IdUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.company.micro_service_1.bean.Student;
 import com.company.micro_service_1.dto.StudentDto;
 import com.company.micro_service_1.service.StudentService;
+import com.company.micro_service_1.util.CglibBeanCopierUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,6 +59,9 @@ public class StudentController {
     @PostMapping("/")
     public void updateStudent(@RequestBody StudentDto studentDto) {
         Student bean = new Student();
-        studentService.update();
+        CglibBeanCopierUtils.copyProperties(studentDto, bean);
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", studentDto.getId());
+        studentService.update(bean, queryWrapper);
     }
 }
