@@ -10,6 +10,7 @@ import com.company.micro_service_1.dto.StudentDto;
 import com.company.micro_service_1.service.StudentService;
 import com.company.micro_service_1.util.CglibBeanCopierUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.Redisson;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -34,6 +35,8 @@ public class StudentController {
     };
     @Resource
     private StudentService studentService;
+    @Resource
+    private Redisson redisson;
 
 
     @GetMapping("/")
