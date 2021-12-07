@@ -9,5 +9,5 @@ import com.company.micro_service_1.bean.Order;
  * @description :
  * @date : 2021-12-02 20:14:53
  */
-public interface OrederMapper extends BaseMapper<Order> {
+public interface OrderMapper extends BaseMapper<Order> {
 }
