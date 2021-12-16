@@ -1,9 +1,11 @@
 package com.company.micro_service_1.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.company.micro_service_1.bean.Order;
 import com.company.micro_service_1.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,5 +24,12 @@ public class OrderController {
     public void getOrderList() {
         List<Order> list = orderService.list();
         list.forEach(System.out::println);
+    }
+
+    @GetMapping("/{id}")
+    public void getOrder(@PathVariable("id") Integer id) {
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+        orderService.getOne(queryWrapper);
     }
 }
