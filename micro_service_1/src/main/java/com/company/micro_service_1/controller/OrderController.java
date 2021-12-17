@@ -32,4 +32,8 @@ public class OrderController {
         queryWrapper.eq("id", id);
         orderService.getOne(queryWrapper);
     }
+
+    public void delOrder(){
+
+    }
 }
