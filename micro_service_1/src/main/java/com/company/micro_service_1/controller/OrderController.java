@@ -30,8 +30,8 @@ public class OrderController {
         orderService.getOne(queryWrapper);
     }
 
-    @DeleteMapping("/")
-    public void delOrder(){
+    @DeleteMapping("/{id}")
+    public void delOrder(@PathVariable("id") Integer id) {
 
     }
 }
