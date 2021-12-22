@@ -32,6 +32,8 @@ public class OrderController {
 
     @DeleteMapping("/{id}")
     public void delOrder(@PathVariable("id") Integer id) {
-
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+        orderService.delete(queryWrapper);
     }
 }
