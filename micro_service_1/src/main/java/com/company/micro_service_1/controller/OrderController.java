@@ -36,4 +36,8 @@ public class OrderController {
         queryWrapper.eq("id", id);
         orderService.delete(queryWrapper);
     }
+
+    public void addOrder() {
+
+    }
 }
