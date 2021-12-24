@@ -37,6 +37,7 @@ public class OrderController {
         orderService.delete(queryWrapper);
     }
 
+    @PutMapping("/")
     public void addOrder() {
 
     }
