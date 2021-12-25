@@ -38,7 +38,7 @@ public class OrderController {
     }
 
     @PutMapping("/")
-    public void addOrder() {
+    public void addOrder(Order order) {
 
     }
 }
