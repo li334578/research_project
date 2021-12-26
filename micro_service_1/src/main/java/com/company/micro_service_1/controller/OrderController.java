@@ -39,6 +39,6 @@ public class OrderController {
 
     @PutMapping("/")
     public void addOrder(Order order) {
-
+        orderService.save(order);
     }
 }
