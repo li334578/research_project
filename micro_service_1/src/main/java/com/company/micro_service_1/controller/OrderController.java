@@ -42,6 +42,7 @@ public class OrderController {
         orderService.save(order);
     }
 
+    @PostMapping("/")
     public void updateOrder(){
 
     }
