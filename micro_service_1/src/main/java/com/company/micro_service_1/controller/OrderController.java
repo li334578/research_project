@@ -43,7 +43,8 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    public void updateOrder(Order order){
-
+    public void updateOrder(Order order) {
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        orderService.update(order, queryWrapper);
     }
 }
