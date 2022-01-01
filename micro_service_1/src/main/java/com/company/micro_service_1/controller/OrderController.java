@@ -43,7 +43,7 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    public void updateOrder(Order order){
-
+    public void updateOrder(Order order) {
+        orderService.update();
     }
 }
