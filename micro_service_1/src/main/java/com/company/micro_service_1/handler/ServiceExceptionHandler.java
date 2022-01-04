@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ServiceExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public Result Exception(Exception e) {
+    public Result<String> Exception(Exception e) {
         log.error("未知异常！", e);
         return Result.error(ResultMsgEnum.SERVER_BUSY.getCode(), ResultMsgEnum.SERVER_BUSY.getMessage());
     }
