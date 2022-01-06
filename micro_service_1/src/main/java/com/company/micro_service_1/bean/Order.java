@@ -2,6 +2,8 @@ package com.company.micro_service_1.bean;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @author : LiWenBo
  * @program : research_project
@@ -11,4 +13,5 @@ import lombok.Data;
 @Data
 public class Order {
     private Long id;
+    private Date createTime;
 }
