@@ -1,4 +1,6 @@
 package com.company.micro_service_1.dto;
 
-public class OrderDto {
+import com.company.micro_service_1.bean.Order;
+
+public class OrderDto extends Order {
 }
