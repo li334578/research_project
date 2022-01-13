@@ -2,6 +2,7 @@ package com.company.micro_service_1.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.company.micro_service_1.bean.Order;
+import com.company.micro_service_1.dto.OrderDto;
 import com.company.micro_service_1.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +44,7 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    public void updateOrder(Order order) {
+    public void updateOrder(OrderDto order) {
         QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", order.getId());
         orderService.update(order, queryWrapper);
