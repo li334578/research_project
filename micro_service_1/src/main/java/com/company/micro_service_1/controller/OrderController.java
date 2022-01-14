@@ -1,5 +1,6 @@
 package com.company.micro_service_1.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.company.micro_service_1.bean.Order;
 import com.company.micro_service_1.dto.OrderDto;
@@ -44,7 +45,7 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    public void updateOrder(OrderDto order) {
+    public void updateOrder(OrderDto orderDto) {
         QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", order.getId());
         orderService.update(order, queryWrapper);
