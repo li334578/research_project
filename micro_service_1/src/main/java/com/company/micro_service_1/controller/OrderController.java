@@ -48,6 +48,7 @@ public class OrderController {
     public void updateOrder(OrderDto orderDto) {
         QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", orderDto.getId());
+        Order entity = new Order();
         orderService.update(order, queryWrapper);
     }
 }
