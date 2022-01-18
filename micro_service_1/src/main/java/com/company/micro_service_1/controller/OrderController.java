@@ -49,6 +49,7 @@ public class OrderController {
         QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", orderDto.getId());
         Order entity = new Order();
+        BeanUtil.copyProperties(orderDto, entity);
         orderService.update(order, queryWrapper);
     }
 }
