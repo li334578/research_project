@@ -50,6 +50,6 @@ public class OrderController {
         queryWrapper.eq("id", orderDto.getId());
         Order entity = new Order();
         BeanUtil.copyProperties(orderDto, entity);
-        orderService.update(order, queryWrapper);
+        orderService.update(entity, queryWrapper);
     }
 }
