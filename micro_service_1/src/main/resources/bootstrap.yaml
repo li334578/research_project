@@ -16,8 +16,6 @@ spring:
         file-extension: yaml
         server-addr: 150.230.251.14:8848
         namespace: 9176c9bf-965c-459f-a233-199e99666fe7
-        username: nacos
-        password: nacos
 #      cluster-name: # 集群名，默认为空。
 #  cloud:
 #    nacos:

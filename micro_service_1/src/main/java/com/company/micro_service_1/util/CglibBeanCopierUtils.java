@@ -43,7 +43,7 @@ public class CglibBeanCopierUtils {
     (2)get和set方法不匹配的处理，创建拷贝的时候报错，无法拷贝任何属性(当且仅当sourceClass的get方法超过set方法时出现)
     (3)BeanCopier
     初始化例子：BeanCopier copier = BeanCopier.create(Source.class, Target.class, useConverter=true)
-    第三个参数userConverter,是否开启Convert,默认BeanCopier只会做同名，同类型属性的copier,否则就会报错.
+    第三个参数useConverter,是否开启Convert,默认BeanCopier只会做同名，同类型属性的copier,否则就会报错.
     copier = BeanCopier.create(source.getClass(), target.getClass(), false);
     copier.copy(source, target, null);
     (4)修复beanCopier对set方法强限制的约束
