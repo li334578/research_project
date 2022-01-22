@@ -8,6 +8,7 @@ import co.elastic.clients.transport.rest_client.RestClientTransport;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +21,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Slf4j
 public class ElasticSearchConfig {
+
+    @Value("${elasticsearch.properties.host}")
+    private String host;
+
+    @Value("${elasticsearch.properties.port}")
+    private Integer port;
 
     @Bean
     public ElasticsearchClient elasticsearchClient(ElasticsearchTransport elasticsearchTransport) {
@@ -44,7 +51,7 @@ public class ElasticSearchConfig {
     public RestClient restClient() {
         log.info("11111");
         return RestClient.builder(
-                new HttpHost("152.67.197.31", 9200)).build();
+                new HttpHost(host, port)).build();
     }
 
 
