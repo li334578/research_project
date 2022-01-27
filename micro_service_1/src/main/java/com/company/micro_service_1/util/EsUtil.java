@@ -2,12 +2,14 @@ package com.company.micro_service_1.util;
 
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.mapping.Property;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Map;
 
 @Component
 public class EsUtil<T> {
@@ -54,6 +56,35 @@ public class EsUtil<T> {
             // 存在返回true 不存在返回false
             return existsResponse.value();
         } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+    /***
+     * 创建索引 执行类型
+     * 常用类型
+     * keyword Property keywordProperty = new Property(new KeywordProperty.Builder().build());
+     * integer Property integerNumberProperty = new Property(new IntegerNumberProperty.Builder().build());
+     * text    Property textProperty = new Property(new TextProperty.Builder().build());
+     * @param indexName 索引名称
+     * @param map property map
+     * @return 是否创建成功
+     */
+    public Boolean createIndex(String indexName, Map<String, Property> map) {
+        // 检查索引是否存在
+        try {
+            if (exist(indexName)) {
+                return false;
+            }
+            // 创建索引
+            CreateIndexResponse response = elasticsearchClient.indices()
+                    .create(c -> c.index(indexName).mappings(type -> type.properties(map)));
+            return response.acknowledged();
+        } catch (IOException e) {
+            // 访问es失败 返回false
             e.printStackTrace();
             return false;
         }
