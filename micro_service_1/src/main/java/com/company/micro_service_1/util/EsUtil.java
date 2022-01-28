@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.mapping.Property;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
+import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
 import org.springframework.stereotype.Component;
 
@@ -87,6 +88,28 @@ public class EsUtil<T> {
             // 访问es失败 返回false
             e.printStackTrace();
             return false;
+        }
+    }
+
+
+    /**
+     * 获取索引信息
+     *
+     * @param indexName 索引名称
+     * @return GetIndexResponse 索引信息
+     */
+    public GetIndexResponse getIndex(String indexName) {
+        try {
+            // 索引存在才能获取索引
+            if (exist(indexName)) {
+                return elasticsearchClient.indices().get(c -> c.index(indexName));
+            } else {
+                // 索引不存在
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
