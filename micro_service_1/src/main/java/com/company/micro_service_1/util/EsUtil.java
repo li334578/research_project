@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.mapping.Property;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
+import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
 import org.springframework.stereotype.Component;
@@ -110,6 +111,28 @@ public class EsUtil<T> {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+
+    /**
+     * 删除指定索引
+     *
+     * @param indexName 索引名称
+     * @return 是否删除成功
+     */
+    public Boolean delIndex(String indexName) {
+        try {
+            if (exist(indexName)) {
+                DeleteIndexResponse deleteIndexResponse = elasticsearchClient.indices()
+                        .delete(c -> c.index(indexName));
+                return deleteIndexResponse.acknowledged();
+            } else {
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
