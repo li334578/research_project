@@ -135,4 +135,22 @@ public class EsUtil<T> {
             return false;
         }
     }
+
+    /**
+     * 判断索引下的指定id是否存在数据
+     *
+     * @param indexName 索引名称
+     * @param id        id
+     * @return 存在返回true
+     */
+    public Boolean exist(String indexName, String id) {
+        try {
+            BooleanResponse exists = elasticsearchClient
+                    .exists(request -> request.id(id).index(indexName));
+            return exists.value();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
