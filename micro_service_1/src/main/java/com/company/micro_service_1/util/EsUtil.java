@@ -1,8 +1,12 @@
 package com.company.micro_service_1.util;
 
+import cn.hutool.core.util.StrUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.Result;
 import co.elastic.clients.elasticsearch._types.mapping.Property;
+import co.elastic.clients.elasticsearch.core.CreateRequest;
+import co.elastic.clients.elasticsearch.core.CreateResponse;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class EsUtil<T> {
@@ -153,4 +158,34 @@ public class EsUtil<T> {
             return false;
         }
     }
+
+
+    /**
+     * 向指定索引位置 添加数据
+     *
+     * @param indexName 索引名称
+     * @param data      数据
+     * @param id        id
+     * @return 是否添加成功
+     */
+    public Boolean add(String indexName, String id, T data) {
+        // 数据为空 不允许添加
+        if (data == null || StrUtil.isEmpty(id)) {
+            return false;
+        }
+        try {
+            // 判断id是否存在
+            if (exist(indexName, id)) {
+                // 存在
+                return false;
+            }
+            CreateResponse createResponse = elasticsearchClient.create(CreateRequest
+                    .of(c -> c.index(indexName).id(id).document(data)));
+            return Objects.equals(createResponse.result(), Result.Created);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
