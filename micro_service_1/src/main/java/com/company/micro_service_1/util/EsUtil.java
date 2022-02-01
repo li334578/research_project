@@ -1,5 +1,6 @@
 package com.company.micro_service_1.util;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
@@ -15,8 +16,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 public class EsUtil<T> {
@@ -186,6 +186,31 @@ public class EsUtil<T> {
             e.printStackTrace();
             return false;
         }
+    }
+
+
+    /**
+     * 批量添加数据到es中
+     *
+     * @param indexName 索引名称
+     * @param idList    id列表
+     * @param dataList  数据列表
+     * @return 是否成功
+     * @deprecated 使用add方法
+     */
+    @Deprecated
+    public Boolean batchAdd(String indexName, List<String> idList, List<T> dataList) {
+        // 数据为空 不允许添加
+        if (CollUtil.isEmpty(idList)
+                || CollUtil.isEmpty(dataList)
+                || idList.size() != dataList.size()) {
+            return false;
+        }
+        Set<Boolean> resultSet = new HashSet<>();
+        for (int i = 0; i < dataList.size(); i++) {
+            resultSet.add(add(indexName, idList.get(i), dataList.get(i)));
+        }
+        return resultSet.size() == 1 && resultSet.contains(true);
     }
 
 }
