@@ -1,6 +1,7 @@
 package com.company.micro_service_1.util;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
@@ -209,6 +210,29 @@ public class EsUtil<T> {
         Set<Boolean> resultSet = new HashSet<>();
         for (int i = 0; i < dataList.size(); i++) {
             resultSet.add(add(indexName, idList.get(i), dataList.get(i)));
+        }
+        return resultSet.size() == 1 && resultSet.contains(true);
+    }
+
+
+
+    /**
+     * 批量添加数据到es中 使用随机的uuid
+     *
+     * @param indexName 索引名称
+     * @param dataList  数据列表
+     * @return 是否成功
+     * @deprecated 使用add方法
+     */
+    @Deprecated
+    public Boolean batchAdd(String indexName, List<T> dataList) {
+        // 数据为空 不允许添加
+        if (CollUtil.isEmpty(dataList)) {
+            return false;
+        }
+        Set<Boolean> resultSet = new HashSet<>();
+        for (T t : dataList) {
+            resultSet.add(add(indexName, IdUtil.fastSimpleUUID(), t));
         }
         return resultSet.size() == 1 && resultSet.contains(true);
     }
