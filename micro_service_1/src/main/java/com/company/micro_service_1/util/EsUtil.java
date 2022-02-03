@@ -9,6 +9,8 @@ import co.elastic.clients.elasticsearch._types.Result;
 import co.elastic.clients.elasticsearch._types.mapping.Property;
 import co.elastic.clients.elasticsearch.core.CreateRequest;
 import co.elastic.clients.elasticsearch.core.CreateResponse;
+import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
+import co.elastic.clients.elasticsearch.core.bulk.CreateOperation;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
@@ -236,5 +238,29 @@ public class EsUtil<T> {
         }
         return resultSet.size() == 1 && resultSet.contains(true);
     }
+
+
+    /**
+     * 批量添加数据到es中
+     *
+     * @param indexName 索引名称
+     * @param idList    id列表
+     * @param dataList  数据列表
+     * @return 是否成功
+     */
+    public Boolean add(String indexName, List<String> idList, List<T> dataList) {
+        List<BulkOperation> bulkOperations = new LinkedList<>();
+        for (int i = 0; i < dataList.size(); i++) {
+            int finalI = i;
+            bulkOperations.add(new BulkOperation(CreateOperation.of(item -> item.id(idList.get(finalI)).document(dataList.get(finalI)))));
+        }
+        try {
+            return !elasticsearchClient.bulk(req -> req.operations(bulkOperations).index(indexName)).errors();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 }
