@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class EsUtil<T> {
@@ -262,5 +263,25 @@ public class EsUtil<T> {
         }
     }
 
+
+
+    /**
+     * 批量添加数据到es中 使用随机的uuid
+     *
+     * @param indexName 索引名称
+     * @param dataList  数据列表
+     * @return 是否成功
+     */
+    public Boolean add(String indexName, List<T> dataList) {
+        List<BulkOperation> collect = dataList.stream()
+                .map(item -> CreateOperation.of(item2 -> item2.id(IdUtil.fastSimpleUUID()).document(item)))
+                .map(BulkOperation::new).collect(Collectors.toList());
+        try {
+            return !elasticsearchClient.bulk(req -> req.operations(collect).index(indexName)).errors();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }
