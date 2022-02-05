@@ -9,6 +9,7 @@ import co.elastic.clients.elasticsearch._types.Result;
 import co.elastic.clients.elasticsearch._types.mapping.Property;
 import co.elastic.clients.elasticsearch.core.CreateRequest;
 import co.elastic.clients.elasticsearch.core.CreateResponse;
+import co.elastic.clients.elasticsearch.core.DeleteResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
 import co.elastic.clients.elasticsearch.core.bulk.CreateOperation;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
@@ -284,4 +285,21 @@ public class EsUtil<T> {
         }
     }
 
+
+    /**
+     * 删除索引下指定id的数据
+     *
+     * @param indexName 索引名称
+     * @param id        id
+     * @return 是否删除成功
+     */
+    public Boolean delete(String indexName, String id) {
+        try {
+            DeleteResponse delete = elasticsearchClient.delete(req -> req.index(indexName).id(id));
+            return Objects.equals(delete.result(), Result.Deleted);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
