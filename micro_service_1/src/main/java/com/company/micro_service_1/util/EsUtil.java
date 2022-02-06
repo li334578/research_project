@@ -10,6 +10,7 @@ import co.elastic.clients.elasticsearch._types.mapping.Property;
 import co.elastic.clients.elasticsearch.core.CreateRequest;
 import co.elastic.clients.elasticsearch.core.CreateResponse;
 import co.elastic.clients.elasticsearch.core.DeleteResponse;
+import co.elastic.clients.elasticsearch.core.UpdateResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
 import co.elastic.clients.elasticsearch.core.bulk.CreateOperation;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
@@ -297,6 +298,31 @@ public class EsUtil<T> {
         try {
             DeleteResponse delete = elasticsearchClient.delete(req -> req.index(indexName).id(id));
             return Objects.equals(delete.result(), Result.Deleted);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    /**
+     * 更新数据
+     *
+     * @param indexName 索引名称
+     * @param id        id
+     * @param data      数据
+     * @return 是否成功 不存在返回false
+     */
+    public Boolean update(String indexName, String id, T data) {
+        try {
+            if (exist(indexName, id)) {
+                UpdateResponse<?> update = elasticsearchClient
+                        .update(req -> req.index(indexName).id(id).doc(data), data.getClass());
+                return Objects.equals(update.result(), Result.Updated);
+            } else {
+                // 数据不存在
+                return false;
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return false;
