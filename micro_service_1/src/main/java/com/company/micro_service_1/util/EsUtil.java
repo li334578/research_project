@@ -328,4 +328,30 @@ public class EsUtil<T> {
             return false;
         }
     }
+
+
+    /**
+     * 更新数据
+     *
+     * @param indexName  索引名称
+     * @param id         id
+     * @param data       数据
+     * @param detectNoop 是否需要重建索引
+     * @return 是否成功 不存在返回false
+     */
+    public Boolean update(String indexName, String id, T data, Boolean detectNoop) {
+        try {
+            if (exist(indexName, id)) {
+                UpdateResponse<?> update = elasticsearchClient
+                        .update(req -> req.index(indexName).id(id).doc(data).detectNoop(detectNoop), data.getClass());
+                return Objects.equals(update.result(), Result.Updated);
+            } else {
+                // 数据不存在
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
