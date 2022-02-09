@@ -375,4 +375,25 @@ public class EsUtil<T> {
             return false;
         }
     }
+
+
+    /**
+     * 更新数据
+     *
+     * @param indexName  索引名称
+     * @param id         id
+     * @param data       数据
+     * @param detectNoop 是否需要重建索引
+     * @return 是否成功 不存在执行insert
+     */
+    public Boolean upsert(String indexName, String id, T data, Class<T> clazz, Boolean detectNoop) {
+        try {
+            UpdateResponse<T> update = elasticsearchClient
+                    .update(req -> req.index(indexName).id(id).upsert(data).detectNoop(detectNoop), clazz);
+            return Objects.equals(update.result(), Result.Updated);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
