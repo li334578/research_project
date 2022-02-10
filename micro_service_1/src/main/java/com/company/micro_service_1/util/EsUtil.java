@@ -7,10 +7,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.Result;
 import co.elastic.clients.elasticsearch._types.mapping.Property;
-import co.elastic.clients.elasticsearch.core.CreateRequest;
-import co.elastic.clients.elasticsearch.core.CreateResponse;
-import co.elastic.clients.elasticsearch.core.DeleteResponse;
-import co.elastic.clients.elasticsearch.core.UpdateResponse;
+import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
 import co.elastic.clients.elasticsearch.core.bulk.CreateOperation;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
@@ -394,6 +391,26 @@ public class EsUtil<T> {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+
+    /**
+     * 根据id查询数据
+     *
+     * @param indexName 索引名称
+     * @param id        id
+     * @param clazz     clazz
+     * @return 存在返回数据 不存在返回null
+     */
+    public T get(String indexName, String id, Class<T> clazz) {
+        // 根据id查询
+        try {
+            GetResponse<T> product01 = elasticsearchClient.get(q -> q.index(indexName).id(id), clazz);
+            return product01.source();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
