@@ -10,6 +10,7 @@ import co.elastic.clients.elasticsearch._types.mapping.Property;
 import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
 import co.elastic.clients.elasticsearch.core.bulk.CreateOperation;
+import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
@@ -413,4 +414,25 @@ public class EsUtil<T> {
             return null;
         }
     }
+
+
+
+    /**
+     * 根据id查询数据
+     *
+     * @param indexName 索引名称
+     * @param idList    idList
+     * @param clazz     clazz
+     * @return 存在返回数据 emptyList
+     */
+    public List<Hit<T>> get(String indexName, List<String> idList, Class<T> clazz) {
+        try {
+            SearchResponse<T> search = elasticsearchClient.search(req -> req.query(q -> q.ids(v -> v.values(idList))).index(indexName), clazz);
+            return search.hits().hits();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
 }
