@@ -11,6 +11,7 @@ import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
 import co.elastic.clients.elasticsearch.core.bulk.CreateOperation;
 import co.elastic.clients.elasticsearch.core.search.Hit;
+import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
@@ -435,4 +436,22 @@ public class EsUtil<T> {
         }
     }
 
+
+    /**
+     * @param indexName 索引名称
+     * @param pageNo    页码
+     * @param pageSize  当前页显示条数
+     * @param clazz     clazz
+     * @return 数据
+     */
+    public HitsMetadata<T> get(String indexName, Integer pageNo, Integer pageSize, Class<T> clazz) {
+        try {
+            Integer from = (Math.max(pageNo - 1, 0)) * pageSize;
+            SearchResponse<T> search = elasticsearchClient.search(req -> req.from(from).size(pageSize).index(indexName), clazz);
+            return search.hits();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
