@@ -6,7 +6,12 @@ import cn.hutool.core.util.StrUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.Result;
+import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch._types.analysis.Analyzer;
 import co.elastic.clients.elasticsearch._types.mapping.Property;
+import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
 import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
 import co.elastic.clients.elasticsearch.core.bulk.CreateOperation;
@@ -15,6 +20,7 @@ import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
+import co.elastic.clients.json.JsonData;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
 import org.springframework.stereotype.Component;
 
@@ -449,6 +455,99 @@ public class EsUtil<T> {
             Integer from = (Math.max(pageNo - 1, 0)) * pageSize;
             SearchResponse<T> search = elasticsearchClient.search(req -> req.from(from).size(pageSize).index(indexName), clazz);
             return search.hits();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    /**
+     * @param indexName              索引名称
+     * @param clazz                  clazz
+     * @param esSearchFieldList      查询条件
+     * @param esSearchFieldRangeList 范围条件
+     * @param esSearchPage           分页条件
+     * @param esSearchOrder          排序条件
+     * @param analyzer               分词器
+     * @return 命中数据
+     */
+    public HitsMetadata<T> query(String indexName, Class<T> clazz,
+                                 List<EsSearchField> esSearchFieldList,
+                                 List<EsSearchFieldRange> esSearchFieldRangeList,
+                                 EsSearchPage esSearchPage,
+                                 EsSearchOrder esSearchOrder,
+                                 Analyzer.Kind analyzer) {
+        List<Query> queryList = new ArrayList<>();
+        // 条件查询
+        if (CollUtil.isNotEmpty(esSearchFieldList)) {
+            esSearchFieldList.forEach(esSearchField -> {
+                switch (esSearchField.getSearchType()) {
+                    case 1:
+                        queryList.add(new Query.Builder().term(generateTermQuery(esSearchField)).build());
+                        break;
+                    case 2:
+                        queryList.add(new Query.Builder().match(generateMatchQuery(esSearchField)).build());
+                        break;
+                    case 3:
+                        queryList.add(new Query.Builder().matchPhrase(generateMatchPhraseQuery(esSearchField)).build());
+                        break;
+                    case 4:
+                        queryList.add(new Query.Builder().fuzzy(generateFuzzyQuery(esSearchField)).build());
+                        break;
+                }
+            });
+        }
+        // 范围查询
+        if (CollUtil.isNotEmpty(esSearchFieldRangeList)) {
+            esSearchFieldRangeList.forEach(esSearchFieldRange -> {
+                if (esSearchFieldRange.getMaxValue() == null) {
+                    esSearchFieldRange.setMaxValue(Long.MAX_VALUE);
+                }
+                if (esSearchFieldRange.getMinValue() == null) {
+                    esSearchFieldRange.setMinValue(Long.MIN_VALUE);
+                }
+                queryList.add(new Query.Builder()
+                        .range(esSearchFieldRange.getIncludeBoundaryValues()
+                                ? new RangeQuery.Builder()
+                                .field(esSearchFieldRange.getField())
+                                .gte(JsonData.of(esSearchFieldRange.getMinValue()))
+                                .lte(JsonData.of(esSearchFieldRange.getMaxValue()))
+                                .build()
+                                : new RangeQuery.Builder()
+                                .field(esSearchFieldRange.getField())
+                                .gt(JsonData.of(esSearchFieldRange.getMinValue()))
+                                .lt(JsonData.of(esSearchFieldRange.getMaxValue()))
+                                .build())
+                        .build());
+            });
+        }
+        // 合并条件
+        BoolQuery boolQuery = new BoolQuery.Builder()
+                .must(queryList)
+                .build();
+        Query query = new Query.Builder()
+                .bool(boolQuery)
+                .build();
+        SearchRequest.Builder searchBuilder = new SearchRequest.Builder()
+                .index(indexName)
+                .query(query);
+        if (esSearchOrder != null) {
+            searchBuilder.sort(s -> s
+                    .field(v -> v.field(esSearchOrder.getField())
+                            .order(Objects.equals(esSearchOrder.getOrderByType(), SortOrder.Asc.jsonValue()) ? SortOrder.Asc : SortOrder.Desc)));
+        }
+        if (esSearchPage != null) {
+            searchBuilder.from(esSearchPage.getEsPageFrom()).size(esSearchPage.getEsPageSize());
+
+        }
+        if (analyzer != null) {
+            searchBuilder.analyzer(analyzer.jsonValue());
+        }
+        SearchRequest searchRequest = searchBuilder.build();
+        try {
+            SearchResponse<T> searchResponse = elasticsearchClient.search(searchRequest, clazz);
+            return searchResponse.hits();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
