@@ -12,6 +12,7 @@ import co.elastic.clients.elasticsearch._types.mapping.Property;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
 import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
 import co.elastic.clients.elasticsearch.core.bulk.CreateOperation;
@@ -552,5 +553,18 @@ public class EsUtil<T> {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 如果为text; 不分词，不分析
+     *
+     * @param esSearchField
+     * @return
+     */
+    private TermQuery generateTermQuery(EsSearchField esSearchField) {
+        return new TermQuery.Builder()
+                .field(esSearchField.getField())
+                .value(generateQueryFieldValue(esSearchField))
+                .build();
     }
 }
