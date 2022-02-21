@@ -23,6 +23,10 @@ import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
 import co.elastic.clients.json.JsonData;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
+import com.company.micro_service_1.bean.es.EsSearchField;
+import com.company.micro_service_1.bean.es.EsSearchFieldRange;
+import com.company.micro_service_1.bean.es.EsSearchOrder;
+import com.company.micro_service_1.bean.es.EsSearchPage;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
