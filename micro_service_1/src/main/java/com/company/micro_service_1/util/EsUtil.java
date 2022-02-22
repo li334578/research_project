@@ -9,10 +9,7 @@ import co.elastic.clients.elasticsearch._types.Result;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.analysis.Analyzer;
 import co.elastic.clients.elasticsearch._types.mapping.Property;
-import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
 import co.elastic.clients.elasticsearch.core.bulk.CreateOperation;
@@ -569,6 +566,19 @@ public class EsUtil<T> {
         return new TermQuery.Builder()
                 .field(esSearchField.getField())
                 .value(generateQueryFieldValue(esSearchField))
+                .build();
+    }
+
+    /**
+     * 如果为text;分词，分析
+     *
+     * @param esSearchField
+     * @return
+     */
+    private MatchQuery generateMatchQuery(EsSearchField esSearchField) {
+        return new MatchQuery.Builder()
+                .field(esSearchField.getField())
+                .query(generateQueryFieldValue(esSearchField))
                 .build();
     }
 }
