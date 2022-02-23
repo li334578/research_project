@@ -581,4 +581,17 @@ public class EsUtil<T> {
                 .query(generateQueryFieldValue(esSearchField))
                 .build();
     }
+
+    /**
+     * 如果为text;不分词，包含查询字符串（被查询字符串 是 查询结果 的 子字符串）
+     *
+     * @param esSearchField
+     * @return
+     */
+    private MatchPhraseQuery generateMatchPhraseQuery(EsSearchField esSearchField) {
+        return new MatchPhraseQuery.Builder()
+                .field(esSearchField.getField())
+                .query((String) esSearchField.getValue())
+                .build();
+    }
 }
