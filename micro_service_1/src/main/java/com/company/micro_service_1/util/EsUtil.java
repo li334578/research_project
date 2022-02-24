@@ -594,4 +594,11 @@ public class EsUtil<T> {
                 .query((String) esSearchField.getValue())
                 .build();
     }
+
+    private FuzzyQuery generateFuzzyQuery(EsSearchField esSearchField) {
+        return new FuzzyQuery.Builder()
+                .field(esSearchField.getField())
+                .value(v -> v.stringValue((String) esSearchField.getValue()))
+                .build();
+    }
 }
