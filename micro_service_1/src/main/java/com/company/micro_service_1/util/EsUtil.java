@@ -601,4 +601,15 @@ public class EsUtil<T> {
                 .value(v -> v.stringValue((String) esSearchField.getValue()))
                 .build();
     }
+
+    /**
+     * wildcard query 通配符查询，支持* 任意字符串；？任意一个字符
+     */
+    private WildcardQuery generateWildcardQuery(EsSearchField esSearchField) {
+        return new WildcardQuery.Builder()
+                .field(esSearchField.getField())
+                .value(String.valueOf(esSearchField.getValue()))
+                .build();
+    }
+
 }
