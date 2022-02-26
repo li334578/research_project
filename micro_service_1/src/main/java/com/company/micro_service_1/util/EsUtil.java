@@ -5,6 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.Result;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.analysis.Analyzer;
@@ -612,4 +613,38 @@ public class EsUtil<T> {
                 .build();
     }
 
+
+    /**
+     * 查询条件的值
+     *
+     * @param esSearchField
+     * @return
+     */
+    private FieldValue generateQueryFieldValue(EsSearchField esSearchField) {
+        FieldValue fieldValue;
+        switch (esSearchField.getEsFieldType()) {
+            case BOOLEAN:
+                fieldValue = new FieldValue.Builder().booleanValue((Boolean) esSearchField.getValue()).build();
+                break;
+            case KEYWORD:
+            case TEXT:
+                fieldValue = new FieldValue.Builder().stringValue((String) esSearchField.getValue()).build();
+                break;
+            case INTEGER:
+            case LONG:
+                fieldValue = new FieldValue.Builder().longValue((Long) esSearchField.getValue()).build();
+                break;
+            case FLOAT:
+            case DOUBLE:
+            case DATE:
+                fieldValue = new FieldValue.Builder().doubleValue((Double) esSearchField.getValue()).build();
+                break;
+            case BINARY:
+            case OBJECT:
+            default:
+                fieldValue = new FieldValue.Builder().nullValue().build();
+                break;
+        }
+        return fieldValue;
+    }
 }
