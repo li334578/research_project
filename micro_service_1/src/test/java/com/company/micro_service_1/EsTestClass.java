@@ -4,6 +4,8 @@ import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.mapping.*;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
+import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
+import co.elastic.clients.transport.endpoints.BooleanResponse;
 import com.company.micro_service_1.util.EsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -62,5 +64,18 @@ public class EsTestClass {
         map.put("className", textProperty);
         map.put("remark", textProperty);
         esUtil.createIndex("product01", map);
+    }
+
+    @Test
+    public void testMethod2() throws IOException {
+        // 获取索引
+        GetIndexResponse product01 = elasticsearchClient.indices().get(c -> c.index("product01"));
+        System.out.println(product01);
+        BooleanResponse product021 = elasticsearchClient.indices().exists(c -> c.index("product02"));
+        // 存在返回true 不存在返回false
+        System.out.println(product021.value());
+        // 不存在  no such index [product02]
+//        GetIndexResponse product02 = elasticsearchClient.indices().get(c -> c.index("product02"));
+//        System.out.println(product02);
     }
 }
