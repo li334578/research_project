@@ -78,4 +78,10 @@ public class EsTestClass {
 //        GetIndexResponse product02 = elasticsearchClient.indices().get(c -> c.index("product02"));
 //        System.out.println(product02);
     }
+
+    @Test
+    public void testMethod3() {
+        // 删除索引
+        System.out.println(esUtil.delIndex("product01"));
+    }
 }
