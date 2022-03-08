@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.mapping.*;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
+import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
 import com.company.micro_service_1.util.EsUtil;
@@ -83,5 +84,13 @@ public class EsTestClass {
     public void testMethod3() {
         // 删除索引
         System.out.println(esUtil.delIndex("product01"));
+    }
+
+    @Test
+    public void testMethod3_1() throws IOException {
+        // 删除索引
+        DeleteIndexResponse product01 = elasticsearchClient.indices().delete(c -> c.index("product02"));
+        System.out.println(product01);
+        System.out.println(product01.acknowledged());
     }
 }
