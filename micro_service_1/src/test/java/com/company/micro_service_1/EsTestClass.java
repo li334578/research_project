@@ -3,10 +3,13 @@ package com.company.micro_service_1;
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.mapping.*;
+import co.elastic.clients.elasticsearch.core.CreateRequest;
+import co.elastic.clients.elasticsearch.core.CreateResponse;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
+import com.company.micro_service_1.bean.Person;
 import com.company.micro_service_1.util.EsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -92,5 +95,14 @@ public class EsTestClass {
         DeleteIndexResponse product01 = elasticsearchClient.indices().delete(c -> c.index("product02"));
         System.out.println(product01);
         System.out.println(product01.acknowledged());
+    }
+
+    @Test
+    public void testMethod4() throws IOException {
+        Person person = new Person("赵三", 45, null);
+        // PUT /product01/_doc/1
+        CreateRequest<Person> createRequest = CreateRequest.of(c -> c.index("product01").id("5").document(person));
+        CreateResponse createResponse = elasticsearchClient.create(createRequest);
+        System.out.println(createResponse);
     }
 }
