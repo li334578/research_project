@@ -105,4 +105,13 @@ public class EsTestClass {
         CreateResponse createResponse = elasticsearchClient.create(createRequest);
         System.out.println(createResponse);
     }
+
+    @Test
+    public void testMethod4_1() throws IOException {
+        Person person = new Person("赵三", 45, null);
+        // PUT /product01/_doc/1
+        CreateRequest<Person> createRequest = CreateRequest.of(c -> c.index("product01").id("1").document(person));
+        CreateResponse createResponse = elasticsearchClient.create(createRequest);
+        System.out.println(createResponse);
+    }
 }
