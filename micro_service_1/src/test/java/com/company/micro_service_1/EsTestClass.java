@@ -6,6 +6,7 @@ import co.elastic.clients.elasticsearch._types.mapping.*;
 import co.elastic.clients.elasticsearch.core.CreateRequest;
 import co.elastic.clients.elasticsearch.core.CreateResponse;
 import co.elastic.clients.elasticsearch.core.GetResponse;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
@@ -121,6 +122,13 @@ public class EsTestClass {
         // 根据id查询
         GetResponse<Person> product01 = elasticsearchClient.get(q -> q.index("product01").id("1"), Person.class);
         Person source = product01.source();
+        System.out.println(product01);
+    }
+
+    @Test
+    public void testMethod6() throws IOException {
+        // 分页查询
+        SearchResponse<Person> product01 = elasticsearchClient.search(q -> q.index("product01").from(0).size(50), Person.class);
         System.out.println(product01);
     }
 }
