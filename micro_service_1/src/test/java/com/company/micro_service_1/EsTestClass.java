@@ -131,4 +131,19 @@ public class EsTestClass {
         SearchResponse<Person> product01 = elasticsearchClient.search(q -> q.index("product01").from(0).size(50), Person.class);
         System.out.println(product01);
     }
+
+    @Test
+    public void testMethod7() throws IOException {
+        // 分页条件查询
+        SearchResponse<Person> product01 = elasticsearchClient.search(request -> request
+                        .highlight(h -> h.fields("remark",
+                                hf -> hf.matchedFields("remark").preTags("<span style=\"color:red\">").postTags("</span>")))
+                        .query(q -> q.queryString(
+                                q1 -> q1.fields("remark").query("法外狂徒")))
+                        .index("product01")
+                        .from(0).size(50),
+                Person.class);
+        System.out.println(product01);
+    }
+
 }
