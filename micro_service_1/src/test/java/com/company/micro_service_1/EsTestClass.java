@@ -3,10 +3,7 @@ package com.company.micro_service_1;
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.mapping.*;
-import co.elastic.clients.elasticsearch.core.CreateRequest;
-import co.elastic.clients.elasticsearch.core.CreateResponse;
-import co.elastic.clients.elasticsearch.core.GetResponse;
-import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
@@ -155,6 +152,14 @@ public class EsTestClass {
                         .index("product01")
                         .from(0).size(50),
                 Person.class);
+        System.out.println(product01);
+    }
+
+    @Test
+    public void testMethod9() throws IOException {
+        Person person = new Person();
+        person.setAge(61);
+        UpdateResponse<Person> product01 = elasticsearchClient.update(req -> req.doc(person).id("3").index("product01"), Person.class);
         System.out.println(product01);
     }
 
