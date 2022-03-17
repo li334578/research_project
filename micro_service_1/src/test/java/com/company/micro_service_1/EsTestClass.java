@@ -163,4 +163,11 @@ public class EsTestClass {
         System.out.println(product01);
     }
 
+    @Test
+    public void testMethod10() throws IOException {
+        // 删除文档
+        DeleteResponse product01 = elasticsearchClient.delete(req -> req.id("3").index("product01"));
+        System.out.println(product01);
+    }
+
 }
