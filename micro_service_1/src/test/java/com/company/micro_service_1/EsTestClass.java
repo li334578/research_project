@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -168,6 +169,11 @@ public class EsTestClass {
         // 删除文档
         DeleteResponse product01 = elasticsearchClient.delete(req -> req.id("3").index("product01"));
         System.out.println(product01);
+    }
+
+    @Test
+    public void testMethod11() throws IOException {
+        esUtil.add("product01", new ArrayList<>());
     }
 
 }
