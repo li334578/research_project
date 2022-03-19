@@ -176,4 +176,17 @@ public class EsTestClass {
         esUtil.add("product01", new ArrayList<>());
     }
 
+    @Test
+    public void testMethod12() throws IOException {
+        elasticsearchAsyncClient.exists(c -> c.id("1").index("product01"))
+                .thenAccept(response -> {
+                    log.info(response.toString());
+                    if (response.value()) {
+                        // 存在
+                        log.info("data is exist");
+                    }
+                });
+    }
+
+
 }
