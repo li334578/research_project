@@ -188,5 +188,15 @@ public class EsTestClass {
                 });
     }
 
+    @Test
+    public void testMethod13() throws IOException {
+        SearchResponse<Person> product01 = elasticsearchClient.search(request -> request
+                        .query(q ->
+                                q.term(q1 -> q1.field("age").value(v -> v.longValue(12))))
+                        .index("product01")
+                        .from(0).size(50),
+                Person.class);
+        System.out.println(product01.hits().hits());
+    }
 
 }
