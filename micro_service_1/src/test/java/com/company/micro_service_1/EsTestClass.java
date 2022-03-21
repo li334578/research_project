@@ -8,16 +8,23 @@ import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
+import com.company.micro_service_1.bean.Goods;
 import com.company.micro_service_1.bean.Person;
 import com.company.micro_service_1.util.EsUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootTest
@@ -197,6 +204,34 @@ public class EsTestClass {
                         .from(0).size(50),
                 Person.class);
         System.out.println(product01.hits().hits());
+    }
+
+    private List<Goods> getElements(String keyword) throws IOException {
+        String url = "https://search.dangdang.com/?key=" + keyword;
+        Document document = Jsoup.parse(new URL(url), 30000);
+        Element component_59 = document.getElementById("component_59");
+        Elements aClass = component_59.getElementsByAttributeValueMatching("class", "line\\d{1,}");
+        List<Goods> goodsList = new ArrayList<>();
+        Goods goods;
+        for (Element element : aClass) {
+            Elements a = element.getElementsByTag("a");
+            Element element1 = a.get(1);
+            String title = element1.attr("title");
+            Elements img = element.getElementsByTag("img");
+            Element element2 = img.get(0);
+            String src = element2.attr("src");
+            String alt = element2.attr("alt");
+            Elements priceElements = element.getElementsByAttributeValue("class", "search_pre_price");
+            String price = "null";
+            if (!priceElements.isEmpty()) {
+                Element element3 = priceElements.get(0);
+                price = element3.text();
+            }
+            goods = new Goods(title, alt, src, price);
+            goodsList.add(goods);
+        }
+        return goodsList;
+
     }
 
 }
