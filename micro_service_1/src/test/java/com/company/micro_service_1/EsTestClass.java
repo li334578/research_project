@@ -1,5 +1,6 @@
 package com.company.micro_service_1;
 
+import cn.hutool.core.util.IdUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.mapping.*;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 @Slf4j
@@ -204,6 +206,17 @@ public class EsTestClass {
                         .from(0).size(50),
                 Person.class);
         System.out.println(product01.hits().hits());
+    }
+
+    @Test
+    public void testMethod14() throws Exception {
+        List<Goods> javaGoodsList = getElements("java");
+        // 存储到es中
+        List<CreateRequest<Object>> product02 = javaGoodsList.stream().map(item -> CreateRequest.of(c -> c.id(IdUtil.fastSimpleUUID()).index("product03").document(item))).collect(Collectors.toList());
+        for (CreateRequest<Object> createRequest : product02) {
+            CreateResponse createResponse = elasticsearchClient.create(createRequest);
+            System.out.println(createResponse.toString());
+        }
     }
 
     private List<Goods> getElements(String keyword) throws IOException {
