@@ -5,6 +5,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.mapping.*;
 import co.elastic.clients.elasticsearch.core.*;
+import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
@@ -245,6 +246,19 @@ public class EsTestClass {
         }
         return goodsList;
 
+    }
+
+    @Test
+    public void testMethod15() throws IOException {
+        SearchResponse<Goods> goodsSearchResponse = elasticsearchClient.search(request -> request
+                        .query(q ->
+                                q.queryString(q1 -> q1.fields("title").query("Vue")))
+                        .index("product02")
+                        .from(0).size(50),
+                Goods.class);
+        for (Hit<Goods> hit : goodsSearchResponse.hits().hits()) {
+            System.out.println(hit.source());
+        }
     }
 
 }
