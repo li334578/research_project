@@ -261,4 +261,15 @@ public class EsTestClass {
         }
     }
 
+    @Test
+    public void testMethod15_2() throws IOException {
+        SearchResponse<Goods> goodsSearchResponse = elasticsearchClient.search(request -> request
+                        .index("product03")
+                        .from(0).size(50),
+                Goods.class);
+        for (Hit<Goods> hit : goodsSearchResponse.hits().hits()) {
+            System.out.println(hit.source());
+        }
+    }
+
 }
