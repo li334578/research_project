@@ -272,4 +272,16 @@ public class EsTestClass {
         }
     }
 
+    @Test
+    public void testMethod16() throws IOException {
+        // term查询主要用于精确匹配哪些值，比如数字，日期，布尔值或者not_analyzed的字符串未经分析的文本数据类型。
+        SearchResponse<Person> product01 = elasticsearchClient.search(request -> request
+                        .query(q ->
+                                q.term(q1 -> q1.field("name").value(v -> v.stringValue("王五"))))
+                        .index("product01")
+                        .from(0).size(50),
+                Person.class);
+        System.out.println(product01.hits().hits());
+    }
+
 }
