@@ -3,6 +3,7 @@ package com.company.micro_service_1;
 import cn.hutool.core.util.IdUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.mapping.*;
 import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.search.Hit;
@@ -24,10 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SpringBootTest
@@ -278,6 +276,18 @@ public class EsTestClass {
         SearchResponse<Person> product01 = elasticsearchClient.search(request -> request
                         .query(q ->
                                 q.term(q1 -> q1.field("name").value(v -> v.stringValue("王五"))))
+                        .index("product01")
+                        .from(0).size(50),
+                Person.class);
+        System.out.println(product01.hits().hits());
+    }
+
+    @Test
+    public void testMethod16_2() throws IOException {
+        // terms查询主要用于精确匹配哪些值，比如数字，日期，布尔值或者not_analyzed的字符串未经分析的文本数据类型。
+        SearchResponse<Person> product01 = elasticsearchClient.search(request -> request
+                        .query(q ->
+                                q.terms(q1 -> q1.field("age").terms(v -> v.value(Arrays.asList(FieldValue.of(12), FieldValue.of(32))))))
                         .index("product01")
                         .from(0).size(50),
                 Person.class);
