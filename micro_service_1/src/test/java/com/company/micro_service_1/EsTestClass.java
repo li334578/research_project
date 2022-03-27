@@ -10,6 +10,7 @@ import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
+import co.elastic.clients.json.JsonData;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
 import com.company.micro_service_1.bean.Goods;
 import com.company.micro_service_1.bean.Person;
@@ -291,6 +292,15 @@ public class EsTestClass {
                         .index("product01")
                         .from(0).size(50),
                 Person.class);
+        System.out.println(product01.hits().hits());
+    }
+
+    @Test
+    public void testMethod17() throws IOException {
+        // range 范围查询age gt 大于 lt 小于
+        SearchResponse<Person> product01 = elasticsearchClient.search(request -> request
+                .query(q -> q.range(q1 -> q1.field("age").gt(JsonData.of(10)).lte(JsonData.of(32))))
+                .index("product01"), Person.class);
         System.out.println(product01.hits().hits());
     }
 
