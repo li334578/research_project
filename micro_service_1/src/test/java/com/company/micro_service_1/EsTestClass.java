@@ -304,4 +304,13 @@ public class EsTestClass {
         System.out.println(product01.hits().hits());
     }
 
+    @Test
+    public void testMethod18() throws Exception {
+        // exist
+        BooleanResponse product01 = elasticsearchClient.exists(request -> request.id("1").index("product01"));
+        System.out.println(product01.value());
+        // todo 属性不存在的查询
+//        elasticsearchClient.existsSource(request -> request.source(v->v.fields()))
+    }
+
 }
