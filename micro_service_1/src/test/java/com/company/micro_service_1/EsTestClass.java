@@ -313,4 +313,11 @@ public class EsTestClass {
 //        elasticsearchClient.existsSource(request -> request.source(v->v.fields()))
     }
 
+    @Test
+    public void testMethod19() throws Exception {
+        // match 查询时一个标准的查询，不论你需要全文本查询（模糊）还是精确查询都可以用它
+        SearchResponse<Person> search = elasticsearchClient.search(request
+                -> request.query(q1 -> q1.match(m -> m.field("name").query(v -> v.stringValue("张三")))).index("product01"), Person.class);
+        System.out.println(search.hits().hits());
+    }
 }
