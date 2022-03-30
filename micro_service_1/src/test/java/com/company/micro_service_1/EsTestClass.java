@@ -320,4 +320,19 @@ public class EsTestClass {
                 -> request.query(q1 -> q1.match(m -> m.field("name").query(v -> v.stringValue("张三")))).index("product01"), Person.class);
         System.out.println(search.hits().hits());
     }
+
+    @Test
+    public void testMethod20() throws Exception {
+        // bool 姓名中包含 '三' 年龄 不大于等于30
+        SearchResponse<Person> search = elasticsearchClient.search(request -> request
+                        .query(q -> q
+                                .bool(b -> b
+                                        .must(must -> must
+                                                .match(m -> m.field("name").query(v1 -> v1.stringValue("三"))))
+                                        .mustNot(mustNot -> mustNot
+                                                .range(v1 -> v1.field("age").gte(JsonData.of(30))))))
+                        .index("product01"),
+                Person.class);
+        System.out.println(search.hits().hits());
+    }
 }
