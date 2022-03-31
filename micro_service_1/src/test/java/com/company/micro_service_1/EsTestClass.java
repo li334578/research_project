@@ -335,4 +335,17 @@ public class EsTestClass {
                 Person.class);
         System.out.println(search.hits().hits());
     }
+
+    @Test
+    public void testMethod21() throws Exception {
+        SearchResponse<Person> search = elasticsearchClient.search(request -> request
+                .query(q -> q
+                        .bool(b -> b
+                                .must(must -> must
+                                        .match(m -> m.field("name").query(v1 -> v1.stringValue("三"))))
+                                .filter(f -> f
+                                        .term(t -> t.field("age").value(v -> v.longValue(45))))))
+                .index("product01"), Person.class);
+        System.out.println(search.hits().hits());
+    }
 }
