@@ -348,4 +348,12 @@ public class EsTestClass {
                 .index("product01"), Person.class);
         System.out.println(search.hits().hits());
     }
+
+    @Test
+    public void testMethod22() throws Exception {
+        // null字段会自动忽略更新
+        Person person = new Person("赵四", null, null);
+        UpdateResponse<Person> product01 = elasticsearchClient.update(request -> request.id("5").doc(person).index("product01"), Person.class);
+        System.out.println(product01.get());
+    }
 }
