@@ -356,4 +356,14 @@ public class EsTestClass {
         UpdateResponse<Person> product01 = elasticsearchClient.update(request -> request.id("5").doc(person).index("product01"), Person.class);
         System.out.println(product01.get());
     }
+
+    @Test
+    public void testMethod23() throws Exception {
+        // 若对应文档不存在 会进行insert
+        Person person = new Person("李四2", null, "法外狂徒李四");
+        UpdateResponse<Person> product01 = elasticsearchClient.update(request -> request.id("2").doc(person).docAsUpsert(true).index("product01"), Person.class);
+        elasticsearchClient.update(request -> request.upsert(person).id("2").index("product01"), Person.class);
+        System.out.println(product01.get());
+        // 	detectNoop() 前后文档值相同时 是否重建索引 默认为true
+    }
 }
