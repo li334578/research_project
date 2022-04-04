@@ -7,6 +7,7 @@ import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.mapping.*;
 import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.search.Hit;
+import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
@@ -14,6 +15,8 @@ import co.elastic.clients.json.JsonData;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
 import com.company.micro_service_1.bean.Goods;
 import com.company.micro_service_1.bean.Person;
+import com.company.micro_service_1.bean.es.EsSearchField;
+import com.company.micro_service_1.bean.es.EsSearchPage;
 import com.company.micro_service_1.util.EsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -365,5 +368,16 @@ public class EsTestClass {
         elasticsearchClient.update(request -> request.upsert(person).id("2").index("product01"), Person.class);
         System.out.println(product01.get());
         // 	detectNoop() 前后文档值相同时 是否重建索引 默认为true
+    }
+
+    @Test
+    public void testMethod24() throws Exception {
+        List<EsSearchField> esSearchFieldList = new ArrayList<>();
+        esSearchFieldList.add(new EsSearchField());
+        esSearchFieldList.add(new EsSearchField());
+        HitsMetadata<Goods> product03 = esUtil.query("product04", Goods.class,
+                null, null,
+                new EsSearchPage(1, 50), null, null);
+        System.out.println("successful");
     }
 }
