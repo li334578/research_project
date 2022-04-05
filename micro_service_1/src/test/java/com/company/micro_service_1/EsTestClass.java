@@ -380,4 +380,19 @@ public class EsTestClass {
                 new EsSearchPage(1, 50), null, null);
         System.out.println("successful");
     }
+
+    @Test
+    public void testMethod25() throws Exception {
+        List<Student> list = new LinkedList<>();
+        Student student;
+        for (int i = 1; i < 1000; i++) {
+            String name = "李斐" + i;
+            student = new Student(i, name, RandomUtil.randomInt(10, 80), RandomUtil.randomDouble(20.0, 100.0, 2, RoundingMode.UP), "class" + (i % 5 + 1), "法外狂徒" + name);
+            list.add(student);
+        }
+        list.forEach(System.out::println);
+        Boolean product01 = esUtil.add("product01", list);
+        System.out.println(product01);
+
+    }
 }
