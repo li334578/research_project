@@ -1,6 +1,7 @@
 package com.company.micro_service_1;
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.RandomUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.FieldValue;
@@ -15,6 +16,7 @@ import co.elastic.clients.json.JsonData;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
 import com.company.micro_service_1.bean.Goods;
 import com.company.micro_service_1.bean.Person;
+import com.company.micro_service_1.bean.Student;
 import com.company.micro_service_1.bean.es.EsSearchField;
 import com.company.micro_service_1.bean.es.EsSearchPage;
 import com.company.micro_service_1.util.EsUtil;
@@ -28,6 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -393,6 +396,10 @@ public class EsTestClass {
         list.forEach(System.out::println);
         Boolean product01 = esUtil.add("product01", list);
         System.out.println(product01);
+    }
 
+    @Test
+    public void testMethod26() throws Exception {
+        esUtil.delete("product01", "1");
     }
 }
