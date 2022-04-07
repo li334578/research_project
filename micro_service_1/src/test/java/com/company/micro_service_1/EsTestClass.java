@@ -17,6 +17,7 @@ import co.elastic.clients.transport.endpoints.BooleanResponse;
 import com.company.micro_service_1.bean.Goods;
 import com.company.micro_service_1.bean.Person;
 import com.company.micro_service_1.bean.Student;
+import com.company.micro_service_1.bean.es.EsFieldType;
 import com.company.micro_service_1.bean.es.EsSearchField;
 import com.company.micro_service_1.bean.es.EsSearchPage;
 import com.company.micro_service_1.util.EsUtil;
@@ -401,5 +402,24 @@ public class EsTestClass {
     @Test
     public void testMethod26() throws Exception {
         esUtil.delete("product01", "1");
+    }
+
+    @Test
+    public void testMethod27() throws Exception {
+//        List<EsSearchFieldRange> esSearchFieldRangeList = new LinkedList<>();
+//        esSearchFieldRangeList.add(new EsSearchFieldRange("score", 100L, 60L, EsFieldType.FLOAT, true));
+//        esSearchFieldRangeList.add(new EsSearchFieldRange("age", 30L, 0L, EsFieldType.LONG, false));
+        List<EsSearchField> esSearchFieldList = new LinkedList<>();
+        esSearchFieldList.add(new EsSearchField("remark", "李斐4", EsFieldType.TEXT, 3));
+        // 使用排序的时候 命中score为null
+//        EsSearchOrder searchOrder = new EsSearchOrder("score", EsSearchOrder.order_by_type__desc);
+        HitsMetadata<Student> metadata = esUtil.query("product01", Student.class,
+                esSearchFieldList, null,
+                new EsSearchPage(1, 1000), null, null);
+        System.out.println(metadata.hits().size());
+        for (Hit<Student> hit : metadata.hits()) {
+            System.out.print(hit.source() + " 分数为 ");
+            System.out.println(hit.score());
+        }
     }
 }
