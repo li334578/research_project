@@ -17,6 +17,7 @@ import co.elastic.clients.transport.endpoints.BooleanResponse;
 import com.company.micro_service_1.bean.Goods;
 import com.company.micro_service_1.bean.Person;
 import com.company.micro_service_1.bean.Student;
+import com.company.micro_service_1.bean.Student1;
 import com.company.micro_service_1.bean.es.EsFieldType;
 import com.company.micro_service_1.bean.es.EsSearchField;
 import com.company.micro_service_1.bean.es.EsSearchPage;
@@ -387,11 +388,11 @@ public class EsTestClass {
 
     @Test
     public void testMethod25() throws Exception {
-        List<Student> list = new LinkedList<>();
-        Student student;
+        List<Student1> list = new LinkedList<>();
+        Student1 student;
         for (int i = 1; i < 1000; i++) {
             String name = "李斐" + i;
-            student = new Student(i, name, RandomUtil.randomInt(10, 80), RandomUtil.randomDouble(20.0, 100.0, 2, RoundingMode.UP), "class" + (i % 5 + 1), "法外狂徒" + name);
+            student = new Student1(i, name, RandomUtil.randomInt(10, 80), RandomUtil.randomDouble(20.0, 100.0, 2, RoundingMode.UP), "class" + (i % 5 + 1), "法外狂徒" + name);
             list.add(student);
         }
         list.forEach(System.out::println);
@@ -418,6 +419,29 @@ public class EsTestClass {
                 new EsSearchPage(1, 1000), null, null);
         System.out.println(metadata.hits().size());
         for (Hit<Student> hit : metadata.hits()) {
+            System.out.print(hit.source() + " 分数为 ");
+            System.out.println(hit.score());
+        }
+    }
+
+    @Test
+    public void testMethod28() throws Exception {
+        SearchResponse<Student> search = elasticsearchClient.search(request -> request
+                .query(q -> q
+                        .bool(b -> b
+//                                .must(must -> must
+//                                        .match(m -> m.field("className").query(v1 -> v1.stringValue("class1"))))
+//                                        .must(must -> must
+//                                                .queryString(qs -> qs.fields("className").query("class1")))
+//                                        .must(must -> must
+//                                                .match(m -> m.field("className").query(v -> v.stringValue("class1"))))
+                                        .must(must -> must.matchPhrase(mp -> mp.field("className").query("class1")))
+//                                .filter(f -> f
+//                                        .term(t -> t.field("age").value(v -> v.longValue(55))))
+                        ))
+                .from(0).size(100)
+                .index("product01"), Student.class);
+        for (Hit<Student> hit : search.hits().hits()) {
             System.out.print(hit.source() + " 分数为 ");
             System.out.println(hit.score());
         }
