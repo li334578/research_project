@@ -446,4 +446,21 @@ public class EsTestClass {
             System.out.println(hit.score());
         }
     }
+
+    @Test
+    public void testMethod29() throws Exception {
+        SearchResponse<Student> search = elasticsearchClient.search(request -> request
+//                .query(q -> q.matchPhrase(mp -> mp.field("className").query("class").analyzer("standard")))
+//                .query(q -> q.match(m -> m.field("className").query(v->v.stringValue("class"))))
+//                .query(q -> q.queryString(qs -> qs.fields("className").query("class")))
+                .query(q -> q.fuzzy(f -> f.field("className").value(v -> v.stringValue("class"))))
+                .from(0).size(1000)
+                .index("product01"), Student.class);
+        System.out.println(search.hits().hits().size());
+        for (Hit<Student> hit : search.hits().hits()) {
+            System.out.print(hit.source() + " 分数为 ");
+            System.out.println(hit.score());
+        }
+    }
+
 }
