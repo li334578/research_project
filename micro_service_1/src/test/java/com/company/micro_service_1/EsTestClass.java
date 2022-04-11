@@ -7,6 +7,8 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.mapping.*;
 import co.elastic.clients.elasticsearch.core.*;
+import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
+import co.elastic.clients.elasticsearch.core.bulk.CreateOperation;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
@@ -461,6 +463,14 @@ public class EsTestClass {
             System.out.print(hit.source() + " 分数为 ");
             System.out.println(hit.score());
         }
+    }
+
+    @Test
+    public void testMethod30() throws IOException {
+        List<Goods> javaGoodsList = getElements("余华");
+        List<BulkOperation> collect = javaGoodsList.stream().map(item -> CreateOperation.of(v -> v.id(IdUtil.fastSimpleUUID()).document(item))).map(BulkOperation::new).collect(Collectors.toList());
+        BulkResponse product02 = elasticsearchClient.bulk(req -> req.operations(collect).index("product02"));
+        System.out.println(product02);
     }
 
 }
