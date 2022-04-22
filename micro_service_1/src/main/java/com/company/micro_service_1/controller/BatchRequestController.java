@@ -1,6 +1,9 @@
 package com.company.micro_service_1.controller;
 
+import com.company.micro_service_1.controller.dto.RequestBean;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * @Classname BatchRequestController
@@ -11,4 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class BatchRequestController {
+
+    LinkedBlockingDeque<RequestBean> queue = new LinkedBlockingDeque<>();
 }
