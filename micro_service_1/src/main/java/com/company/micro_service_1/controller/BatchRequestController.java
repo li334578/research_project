@@ -1,8 +1,11 @@
 package com.company.micro_service_1.controller;
 
+import cn.hutool.core.util.IdUtil;
 import com.company.micro_service_1.controller.dto.RequestBean;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
@@ -16,4 +19,13 @@ import java.util.concurrent.LinkedBlockingDeque;
 public class BatchRequestController {
 
     LinkedBlockingDeque<RequestBean> queue = new LinkedBlockingDeque<>();
+
+    public Map<String, Object> queryOrderInfo(String orderCode) throws Exception {
+        String serialNo = IdUtil.fastSimpleUUID();
+        CompletableFuture<Map<String, Object>> completableFuture = new CompletableFuture<>();
+
+        RequestBean requestBean = new RequestBean(serialNo, completableFuture, orderCode);
+        queue.add(requestBean);
+        return completableFuture.get();
+    }
 }
