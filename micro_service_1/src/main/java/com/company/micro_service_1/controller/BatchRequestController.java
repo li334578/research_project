@@ -1,14 +1,14 @@
 package com.company.micro_service_1.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import com.company.micro_service_1.controller.dto.RequestBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.LinkedBlockingDeque;
+import javax.annotation.PostConstruct;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * @Classname BatchRequestController
@@ -32,6 +32,41 @@ public class BatchRequestController {
         return completableFuture.get();
     }
 
+    @PostConstruct
+    public void init() {
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            if (CollUtil.isEmpty(queue)) {
+                return;
+            }
+            int size = queue.size();
+            List<Map<String, Object>> mapArrayList = new ArrayList<>();
+            List<RequestBean> requestBeanList = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                RequestBean requestBean = queue.poll();
+                if (Objects.isNull(requestBean)) {
+                    continue;
+                }
+                Map<String, Object> map = new HashMap<>();
+                map.put("orderCode", requestBean.getOrderCode());
+                map.put("serialNo", requestBean.getSerialNo());
+                mapArrayList.add(map);
+                requestBeanList.add(requestBean);
+            }
+            List<Map<String, Object>> responses = batch(mapArrayList);
+            for (RequestBean requestBean : requestBeanList) {
+                String serialNo = requestBean.getSerialNo();
+                for (Map<String, Object> response : responses) {
+                    if (Objects.equals(serialNo, response.get("serialNo"))) {
+                        // 通知对应线程
+                        CompletableFuture<Map<String, Object>> completableFuture = requestBean.getCompletableFuture();
+                        completableFuture.complete(response);
+                        break;
+                    }
+                }
+            }
+        }, 0, 50, TimeUnit.MILLISECONDS);
+    }
     public List<Map<String, Object>> batch(List<Map<String, Object>> mapArrayList) {
         log.info("模拟批量处理");
         return mapArrayList;
