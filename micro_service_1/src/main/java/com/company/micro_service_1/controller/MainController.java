@@ -1,5 +1,6 @@
 package com.company.micro_service_1.controller;
 
+import com.company.micro_service_1.service.CdkService;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RedissonClient;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,4 +26,9 @@ public class MainController {
 
     @Resource
     private RedissonClient redissonClient;
+
+    @Resource
+    private CdkService cdkService;
+
+    private static final String baseString = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 }
