@@ -1,5 +1,7 @@
 package com.company.micro_service_1.controller;
 
+import cn.hutool.core.lang.copier.Copier;
+import com.company.micro_service_1.bean.Cdk;
 import com.company.micro_service_1.service.CdkService;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RedissonClient;
@@ -31,4 +33,10 @@ public class MainController {
     private CdkService cdkService;
 
     private static final String baseString = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    private static final Copier<Cdk> cdkCopier = () -> {
+        Cdk cdk = new Cdk();
+        cdk.setUseStatus(0);
+        return cdk;
+    };
 }
