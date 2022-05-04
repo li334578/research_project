@@ -2,6 +2,7 @@ package com.company.micro_service_1.controller;
 
 import cn.hutool.core.lang.copier.Copier;
 import com.company.micro_service_1.bean.Cdk;
+import com.company.micro_service_1.controller.dto.GetCdk;
 import com.company.micro_service_1.service.CdkService;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RedissonClient;
@@ -9,7 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * @Classname MainController
@@ -39,4 +44,8 @@ public class MainController {
         cdk.setUseStatus(0);
         return cdk;
     };
+
+    Map<String, Set<String>> cdkMap = new HashMap<>();
+
+    LinkedBlockingDeque<GetCdk> queues = new LinkedBlockingDeque<>();
 }
