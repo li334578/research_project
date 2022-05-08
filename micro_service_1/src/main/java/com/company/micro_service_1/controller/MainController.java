@@ -1,5 +1,7 @@
 package com.company.micro_service_1.controller;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.copier.Copier;
 import cn.hutool.core.util.RandomUtil;
 import com.company.micro_service_1.bean.Cdk;
@@ -7,9 +9,14 @@ import com.company.micro_service_1.controller.dto.GetCdk;
 import com.company.micro_service_1.controller.dto.MyConstants;
 import com.company.micro_service_1.service.CdkService;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RList;
+import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -114,5 +121,40 @@ public class MainController {
             e.printStackTrace();
         }
         return cdkMap;
+    }
+
+    @PostMapping("exchange")
+    public DeferredResult<String> exchangeCodes(@RequestBody GetCdk getCdk) {
+        DeferredResult<String> deferredResult = new DeferredResult<>();
+        if (!MyConstants.TAGS.contains(getCdk.getActiveName())) {
+            // 直接拦截
+            deferredResult.setResult("Fail");
+            return deferredResult;
+        }
+        String cdk;
+        RLock lock = redissonClient.getLock(getCdk.getActiveName() + "lock");
+        try {
+            lock.lock();
+            // 秒杀cdk
+            RList<String> list = redissonClient.getList(getCdk.getActiveName());
+            if (CollUtil.isEmpty(list)) {
+                deferredResult.setResult("Fail");
+                return deferredResult;
+            }
+            int index = list.size() - 1;
+            cdk = list.get(index);
+            list.fastRemove(index);
+            // 投递到MQ成功就可以
+            System.out.println(cdk);
+            getCdk.setCdk(cdk);
+            getCdk.setCreateTime(DateUtil.now());
+            // 放到队列 队列去批量投递到MQ
+            log.info(getCdk.getCdk() + "放入队列");
+            queues.add(getCdk);
+        } finally {
+            lock.unlock();
+        }
+        deferredResult.setResult(cdk);
+        return deferredResult;
     }
 }
