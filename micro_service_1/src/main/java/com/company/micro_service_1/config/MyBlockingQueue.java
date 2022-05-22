@@ -1,4 +1,4 @@
-package com.company.micro_service_1.bean;
+package com.company.micro_service_1.config;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,6 +13,8 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 @Slf4j
 public class MyBlockingQueue <R extends Runnable> extends LinkedBlockingDeque<Runnable> {
+
+    private MyThreadPoolExecutor myThreadPoolExecutor;
 
 
     /**
