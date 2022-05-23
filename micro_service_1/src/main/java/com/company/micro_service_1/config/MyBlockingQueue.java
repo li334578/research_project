@@ -25,4 +25,8 @@ public class MyBlockingQueue <R extends Runnable> extends LinkedBlockingDeque<Ru
     public void setCriticalValue(int criticalValue) {
         this.criticalValue = criticalValue;
     }
+
+    public void setMyThreadPoolExecutor(MyThreadPoolExecutor myThreadPoolExecutor) {
+        this.myThreadPoolExecutor = myThreadPoolExecutor;
+    }
 }
