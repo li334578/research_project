@@ -29,4 +29,8 @@ public class MyBlockingQueue <R extends Runnable> extends LinkedBlockingDeque<Ru
     public void setMyThreadPoolExecutor(MyThreadPoolExecutor myThreadPoolExecutor) {
         this.myThreadPoolExecutor = myThreadPoolExecutor;
     }
+
+    public MyBlockingQueue(int capacity) {
+        super(capacity);
+    }
 }
