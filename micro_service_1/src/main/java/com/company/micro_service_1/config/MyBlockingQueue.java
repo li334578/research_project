@@ -3,6 +3,8 @@ package com.company.micro_service_1.config;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Classname MyBlockingQueue
@@ -32,5 +34,11 @@ public class MyBlockingQueue <R extends Runnable> extends LinkedBlockingDeque<Ru
 
     public MyBlockingQueue(int capacity) {
         super(capacity);
+    }
+    public boolean retryOffer(Runnable runnable, long timeout, TimeUnit unit) throws InterruptedException {
+        if (myThreadPoolExecutor.isShutdown()) {
+            throw new RejectedExecutionException("Executor is shutdown!");
+        }
+        return super.offer(runnable, timeout, unit);
     }
 }
