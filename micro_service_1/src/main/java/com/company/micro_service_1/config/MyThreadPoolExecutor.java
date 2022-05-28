@@ -3,6 +3,7 @@ package com.company.micro_service_1.config;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @Classname MyThreadPoolExecutor
@@ -53,4 +54,9 @@ public class MyThreadPoolExecutor extends ThreadPoolExecutor {
         workQueue.setMyThreadPoolExecutor(myThreadPoolExecutor);
         return myThreadPoolExecutor;
     }
+
+    /**
+     * 定义一个成员变量，用于记录当前线程池中已提交的任务数量
+     */
+    private final AtomicInteger submittedTaskCount = new AtomicInteger(0);
 }
