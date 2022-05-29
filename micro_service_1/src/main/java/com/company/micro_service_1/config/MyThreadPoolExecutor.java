@@ -59,4 +59,8 @@ public class MyThreadPoolExecutor extends ThreadPoolExecutor {
      * 定义一个成员变量，用于记录当前线程池中已提交的任务数量
      */
     private final AtomicInteger submittedTaskCount = new AtomicInteger(0);
+
+    public int getSubmittedTaskCount() {
+        return submittedTaskCount.get();
+    }
 }
