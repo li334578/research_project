@@ -63,4 +63,10 @@ public class MyThreadPoolExecutor extends ThreadPoolExecutor {
     public int getSubmittedTaskCount() {
         return submittedTaskCount.get();
     }
+
+    @Override
+    protected void afterExecute(Runnable r, Throwable t) {
+        // 执行任务之后执行的方法 当前线程池中的任务数减一
+        submittedTaskCount.decrementAndGet();
+    }
 }
