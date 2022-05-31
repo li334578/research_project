@@ -69,4 +69,29 @@ public class MyThreadPoolExecutor extends ThreadPoolExecutor {
         // 执行任务之后执行的方法 当前线程池中的任务数减一
         submittedTaskCount.decrementAndGet();
     }
+
+    @Override
+    public void execute(Runnable command) {
+        if (command == null) {
+            throw new NullPointerException();
+        }
+        // 已提交任务数加一
+        submittedTaskCount.incrementAndGet();
+        try {
+            super.execute(command);
+        } catch (RejectedExecutionException e) {
+            log.warn("reject {}", submittedTaskCount.get());
+            // 执行拒绝策略
+            final MyBlockingQueue queue = (MyBlockingQueue) super.getQueue();
+            try {
+                if (!queue.retryOffer(command, 0, TimeUnit.MILLISECONDS)) {
+                    submittedTaskCount.decrementAndGet();
+                    throw new RejectedExecutionException("Queue capacity is full.", e);
+                }
+            } catch (InterruptedException x) {
+                submittedTaskCount.decrementAndGet();
+                throw new RejectedExecutionException(x);
+            }
+        }
+    }
 }
