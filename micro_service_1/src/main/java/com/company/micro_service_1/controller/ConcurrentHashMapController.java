@@ -1,5 +1,11 @@
 package com.company.micro_service_1.controller;
 
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
+
 /**
  * @Classname ConcurrentHashMapController
  * @Description TODO
@@ -17,4 +23,14 @@ public class ConcurrentHashMapController {
 
     //循环次数
     private static final int LOOP_COUNT = 10000000;
+
+
+    private ConcurrentHashMap<String, Long> getData(int count) {
+        return LongStream.rangeClosed(1, count).boxed().collect(Collectors.toConcurrentMap(
+                i -> UUID.randomUUID().toString(),
+                Function.identity(),
+                ((o1, o2) -> o1),
+                ConcurrentHashMap::new
+        ));
+    }
 }
