@@ -66,4 +66,9 @@ public class ConcurrentHashMapController {
 
         return "successfully";
     }
+
+    @GetMapping("/test2")
+    public String testConcurrentHashMap2() throws InterruptedException {
+        return "";
+    }
 }
