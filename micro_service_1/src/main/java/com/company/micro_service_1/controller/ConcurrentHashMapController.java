@@ -69,6 +69,10 @@ public class ConcurrentHashMapController {
 
     @GetMapping("/test2")
     public String testConcurrentHashMap2() throws InterruptedException {
+        // 初始化900个元素
+        ConcurrentHashMap<String, Long> concurrentHashMap = getData(ITEM_COUNT - 100);
+        log.warn("initial size is {}", concurrentHashMap.size());
+        CountDownLatch count = new CountDownLatch(10);
         return "";
     }
 }
