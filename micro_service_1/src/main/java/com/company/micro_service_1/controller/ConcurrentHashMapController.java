@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -73,6 +74,10 @@ public class ConcurrentHashMapController {
         ConcurrentHashMap<String, Long> concurrentHashMap = getData(ITEM_COUNT - 100);
         log.warn("initial size is {}", concurrentHashMap.size());
         CountDownLatch count = new CountDownLatch(10);
+
+        // 使用线程池并发处理
+        ForkJoinPool forkJoinPool = new ForkJoinPool(THREAD_COUNT);
+        ReentrantLock reentrantLock = new ReentrantLock();
         return "";
     }
 }
