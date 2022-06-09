@@ -78,6 +78,21 @@ public class ConcurrentHashMapController {
         // 使用线程池并发处理
         ForkJoinPool forkJoinPool = new ForkJoinPool(THREAD_COUNT);
         ReentrantLock reentrantLock = new ReentrantLock();
+        forkJoinPool.execute(() -> IntStream.rangeClosed(1, 10).parallel().forEach(i -> {
+            // 十个线程并发的处理数据
+            // 查询需要补充的元素
+            try {
+                reentrantLock.lock(); // 加锁解决 或者使用 synchronized(currentHashMap)
+                int gap = ITEM_COUNT - concurrentHashMap.size();
+                log.warn("need add item count is {}", gap);
+                // 补充元素
+                concurrentHashMap.putAll(getData(gap));
+                count.countDown();
+            } finally {
+                reentrantLock.unlock();
+            }
+
+        }));
         return "";
     }
 }
