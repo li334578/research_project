@@ -93,6 +93,15 @@ public class ConcurrentHashMapController {
             }
 
         }));
-        return "";
+        // 等待所有任务完成
+        count.await();
+        // 最终元素个数
+        log.info("finally item count is {}", concurrentHashMap.size());
+        /*
+         * tip ConcurrentHashMap 提供了一些原子性的简单复合逻辑方法，用好这些方法就可以发挥其威力。
+         * 这就引申出代码中常见的另一个问题：在使用一些类库提供的高级工具类时，
+         * 开发人员可能还是按照旧的方式去使用这些新类，因为没有使用其特性，所以无法发挥其威力。
+         * */
+        return "successfully";
     }
 }
