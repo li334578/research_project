@@ -104,4 +104,9 @@ public class ConcurrentHashMapController {
          * */
         return "successfully";
     }
+
+    @GetMapping("/test3")
+    public String testConcurrentHashMap3() throws InterruptedException {
+        return "";
+    }
 }
