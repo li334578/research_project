@@ -116,4 +116,8 @@ public class ConcurrentHashMapController {
         long start = System.currentTimeMillis();
         return "";
     }
+
+    private void testOne() throws InterruptedException {
+
+    }
 }
