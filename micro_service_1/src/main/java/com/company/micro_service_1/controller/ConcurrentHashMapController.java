@@ -118,6 +118,10 @@ public class ConcurrentHashMapController {
     }
 
     private void testOne() throws InterruptedException {
+        ConcurrentHashMap<Integer, Long> concurrentHashMap = new ConcurrentHashMap<>(ITEM_COUNT);
+        ReentrantLock reentrantLock = new ReentrantLock();
 
+        ForkJoinPool forkJoinPool = new ForkJoinPool(THREAD_COUNT);
+        CountDownLatch count = new CountDownLatch(LOOP_COUNT);
     }
 }
