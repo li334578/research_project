@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -123,5 +124,22 @@ public class ConcurrentHashMapController {
 
         ForkJoinPool forkJoinPool = new ForkJoinPool(THREAD_COUNT);
         CountDownLatch count = new CountDownLatch(LOOP_COUNT);
+
+        forkJoinPool.execute(() -> IntStream.rangeClosed(1, LOOP_COUNT).parallel().forEach(item -> {
+            try {
+                reentrantLock.lock();
+                int key = ThreadLocalRandom.current().nextInt(ITEM_COUNT);
+                if (concurrentHashMap.containsKey(key)) {
+                    long value = concurrentHashMap.get(key) + 1;
+                    concurrentHashMap.put(key, value);
+                } else {
+                    concurrentHashMap.put(key, 1L);
+                }
+                count.countDown();
+            } finally {
+                reentrantLock.unlock();
+            }
+        }));
+        count.await();
     }
 }
