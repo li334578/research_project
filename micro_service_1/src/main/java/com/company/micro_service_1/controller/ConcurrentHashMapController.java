@@ -1,8 +1,10 @@
 package com.company.micro_service_1.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
@@ -141,5 +143,9 @@ public class ConcurrentHashMapController {
             }
         }));
         count.await();
+        // 验证key的个数是否等于 ITEM_COUNT
+        Assert.isTrue(Objects.equals(ITEM_COUNT, concurrentHashMap.size()), "key count is error");
+        // 验证value的和是否等于 LOOP_COUNT
+        Assert.isTrue(LOOP_COUNT == concurrentHashMap.values().stream().reduce(0L, Long::sum), "value count is error");
     }
 }
