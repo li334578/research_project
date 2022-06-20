@@ -150,4 +150,9 @@ public class ConcurrentHashMapController {
         // 验证value的和是否等于 LOOP_COUNT
         Assert.isTrue(LOOP_COUNT == concurrentHashMap.values().stream().reduce(0L, Long::sum), "value count is error");
     }
+
+    @GetMapping("/test4")
+    public String testConcurrentHashMap4() throws InterruptedException {
+        return "";
+    }
 }
