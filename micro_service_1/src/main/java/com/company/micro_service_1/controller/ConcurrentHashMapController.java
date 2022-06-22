@@ -162,4 +162,8 @@ public class ConcurrentHashMapController {
         long start = System.currentTimeMillis();
         return "";
     }
+
+    private void testTwo() throws InterruptedException {
+
+    }
 }
