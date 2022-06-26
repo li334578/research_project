@@ -167,5 +167,6 @@ public class ConcurrentHashMapController {
     private void testTwo() throws InterruptedException {
         ConcurrentHashMap<Integer, LongAdder> concurrentHashMap = new ConcurrentHashMap<>(ITEM_COUNT);
         ForkJoinPool forkJoinPool = new ForkJoinPool(THREAD_COUNT);
+        CountDownLatch count = new CountDownLatch(LOOP_COUNT);
     }
 }
