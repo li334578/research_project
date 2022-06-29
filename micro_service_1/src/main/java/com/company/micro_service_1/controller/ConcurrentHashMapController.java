@@ -168,5 +168,7 @@ public class ConcurrentHashMapController {
         ConcurrentHashMap<Integer, LongAdder> concurrentHashMap = new ConcurrentHashMap<>(ITEM_COUNT);
         ForkJoinPool forkJoinPool = new ForkJoinPool(THREAD_COUNT);
         CountDownLatch count = new CountDownLatch(LOOP_COUNT);
+        forkJoinPool.execute(() -> IntStream.rangeClosed(1, LOOP_COUNT).parallel().forEach(item -> {
+        }));
     }
 }
