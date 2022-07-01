@@ -170,6 +170,8 @@ public class ConcurrentHashMapController {
         CountDownLatch count = new CountDownLatch(LOOP_COUNT);
         forkJoinPool.execute(() -> IntStream.rangeClosed(1, LOOP_COUNT).parallel().forEach(item -> {
             int key = ThreadLocalRandom.current().nextInt(ITEM_COUNT);
+            // 利用CurrentHashMap的computeIfAbsent 、LongAdder的原子自增方法 移除掉了containsKey 、lock
+            concurrentHashMap.computeIfAbsent(key, k -> new LongAdder()).increment();
         }));
     }
 }
