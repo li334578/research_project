@@ -172,6 +172,7 @@ public class ConcurrentHashMapController {
             int key = ThreadLocalRandom.current().nextInt(ITEM_COUNT);
             // 利用CurrentHashMap的computeIfAbsent 、LongAdder的原子自增方法 移除掉了containsKey 、lock
             concurrentHashMap.computeIfAbsent(key, k -> new LongAdder()).increment();
+            count.countDown();
         }));
     }
 }
