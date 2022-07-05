@@ -174,5 +174,8 @@ public class ConcurrentHashMapController {
             concurrentHashMap.computeIfAbsent(key, k -> new LongAdder()).increment();
             count.countDown();
         }));
+        count.await();
+        // 验证key的个数是否等于 ITEM_COUNT
+        Assert.isTrue(Objects.equals(ITEM_COUNT, concurrentHashMap.size()), "key count is error");
     }
 }
