@@ -174,5 +174,6 @@ public class ConcurrentHashMapController {
             concurrentHashMap.computeIfAbsent(key, k -> new LongAdder()).increment();
             count.countDown();
         }));
+        count.await();
     }
 }
