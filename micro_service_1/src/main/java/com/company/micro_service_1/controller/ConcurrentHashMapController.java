@@ -161,6 +161,7 @@ public class ConcurrentHashMapController {
          *
          */
         long start = System.currentTimeMillis();
+        testTwo();
         return "";
     }
 
