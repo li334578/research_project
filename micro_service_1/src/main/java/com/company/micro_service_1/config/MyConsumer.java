@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  * @Author liwenbo
  */
 @Slf4j
-@Configuration
+//@Configuration
 public class MyConsumer implements ApplicationListener<ContextRefreshedEvent> {
     @Resource
     private ExecutorService executorService;

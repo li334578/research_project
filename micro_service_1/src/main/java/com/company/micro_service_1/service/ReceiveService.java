@@ -9,5 +9,5 @@ import com.company.micro_service_1.bean.Receive;
  * @Version 1.0.0
  * @Author liwenbo
  */
-public interface ReceiveService extends IService<Receive> {
+public interface ReceiveService extends IService<Receive>  {
 }

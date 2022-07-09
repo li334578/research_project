@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
+//@Component
 public class EsUtil<T> {
     @Resource
     private ElasticsearchClient elasticsearchClient;

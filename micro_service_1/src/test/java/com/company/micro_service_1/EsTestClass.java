@@ -39,7 +39,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SpringBootTest
+//@SpringBootTest
 @Slf4j
 public class EsTestClass {
     @Resource

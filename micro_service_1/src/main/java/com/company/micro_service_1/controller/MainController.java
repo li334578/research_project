@@ -49,8 +49,8 @@ public class MainController {
     @Resource
     private CdkService cdkService;
 
-    @Resource
-    private DefaultMQProducer producer;
+//    @Resource
+//    private DefaultMQProducer producer;
 
     private static final String baseString = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
@@ -106,7 +106,7 @@ public class MainController {
                 messages.add(message);
             }
             try {
-                producer.send(messages);
+//                producer.send(messages);
             } catch (Exception e) {
                 e.printStackTrace();
             }

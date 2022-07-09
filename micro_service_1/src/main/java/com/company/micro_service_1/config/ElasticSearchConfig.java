@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
  * @Version 1.0.0
  * @Author liwenbo
  */
-@Configuration
+//@Configuration
 @Slf4j
 public class ElasticSearchConfig {
 
