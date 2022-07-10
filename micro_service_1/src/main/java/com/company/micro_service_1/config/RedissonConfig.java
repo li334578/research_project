@@ -29,7 +29,7 @@ public class RedissonConfig {
 //      config.useMasterSlaveServers()
 //              .setMasterAddress("redis://150.230.251.14:9379")
                 .setAddress(StrUtil.format(redisConfTemp, redisConfig.getHost(), redisConfig.getPort()))
-                .setPassword("root");
+                .setPassword(redisConfig.getPassword());
         return (Redisson) Redisson.create(config);
     }
 }
