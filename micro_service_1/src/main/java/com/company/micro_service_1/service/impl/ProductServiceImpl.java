@@ -1,8 +1,12 @@
 package com.company.micro_service_1.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.micro_service_1.bean.Product;
+import com.company.micro_service_1.bean.Student;
 import com.company.micro_service_1.mapper.ProductMapper;
+import com.company.micro_service_1.mapper.StudentMapper;
 import com.company.micro_service_1.service.ProductService;
+import com.company.micro_service_1.service.StudentService;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,7 +21,7 @@ import javax.annotation.Resource;
  * @since 2022-07-09 11:25:07
  */
 @Service("productService")
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {
     @Resource
     private ProductMapper productMapper;
 

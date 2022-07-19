@@ -1,6 +1,8 @@
 package com.company.micro_service_1.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.company.micro_service_1.bean.Product;
+import com.company.micro_service_1.bean.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -10,7 +12,7 @@ import org.springframework.data.domain.PageRequest;
  * @author makejava
  * @since 2022-07-09 11:25:06
  */
-public interface ProductService {
+public interface ProductService extends IService<Product> {
 
     /**
      * 通过ID查询单条数据

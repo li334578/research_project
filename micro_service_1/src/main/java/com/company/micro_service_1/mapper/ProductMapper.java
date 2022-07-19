@@ -1,5 +1,6 @@
 package com.company.micro_service_1.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.company.micro_service_1.bean.Product;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,7 @@ import java.util.List;
  * @author makejava
  * @since 2022-07-09 11:25:05
  */
-public interface ProductMapper {
+public interface ProductMapper extends BaseMapper<Product> {
 
     /**
      * 通过ID查询单条数据
