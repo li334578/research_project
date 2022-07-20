@@ -2,19 +2,19 @@ package com.company.micro_service_1;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
+import com.company.micro_service_1.bean.Product;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.redisson.Redisson;
 import org.redisson.api.RBucket;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
+@Slf4j
 class MicroService1ApplicationTests {
     @Resource
     private Redisson redisson;
@@ -81,5 +81,17 @@ class MicroService1ApplicationTests {
         for (int i = 0; i < 10; i++) {
             System.out.println(i + ":" + map.getOrDefault(i, 0));
         }
+    }
+
+    @Test
+    public void testMethod4() {
+        RBucket<Product> myValue = redisson.getBucket("myValue");
+        if (Objects.isNull(myValue.get())) {
+            Product product = new Product(1L, "test1", 10, "备注备注");
+            myValue.set(product);
+        }
+        RBucket<Product> myValue2 = redisson.getBucket("myValue");
+        myValue.set(null);
+        log.info("1231");
     }
 }
