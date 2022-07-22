@@ -1,15 +1,20 @@
 package com.company.micro_service_1.controller;
 
+import cn.hutool.bloomfilter.BitMapBloomFilter;
+import cn.hutool.core.util.BooleanUtil;
 import com.company.micro_service_1.bean.Product;
 import com.company.micro_service_1.service.ProductService;
 import org.redisson.Redisson;
+import org.redisson.api.RBloomFilter;
 import org.redisson.api.RBucket;
 import org.redisson.api.RLock;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -22,6 +27,8 @@ public class CachePenetrationController {
 
     @Resource
     private Redisson redisson;
+
+    private BitMapBloomFilter filter;
 
 
     @RequestMapping("/getProductById1/{productId}")
@@ -59,5 +66,36 @@ public class CachePenetrationController {
                 return productRBucket.get();
             }
         }
+    }
+
+
+    @PostConstruct
+    public void initial() {
+        List<Product> list = productService.list();
+        filter = new BitMapBloomFilter(list.size());
+        // redisson的布隆过滤器
+        RBloomFilter<Object> productList = redisson.getBloomFilter("productList");
+        //初始化,预计元素数量为100000000,期待的误差率为4%
+        productList.tryInit(100000000,0.04);
+        // 添加元素
+        productList.add("123");
+
+        list.forEach(item -> {
+            filter.add(String.valueOf(item.getId()));
+            // 将数据缓存到redis中
+//            String productRedisKey = "productKey:" + item.getId();
+//            RBucket<Product> productRBucket = redisson.getBucket(productRedisKey);
+//            productRBucket.set(item);
+        });
+    }
+
+    @RequestMapping("/getProductById2/{productId}")
+    public Product cacheMethod2(@PathVariable("productId") Long productId) {
+        if (filter.contains(String.valueOf(productId))) {
+            String productRedisKey = "productKey:" + productId;
+            RBucket<Product> productRBucket = redisson.getBucket(productRedisKey);
+            return productRBucket.get();
+        }
+        return null;
     }
 }
