@@ -22,7 +22,37 @@ public class ThreadTestClass2 {
             }).start();
         }
 
-        phaser.awaitAdvance(5);
+        phaser.awaitAdvance(0);
         log.info("end");
+    }
+
+    @Test
+    public void testMethod2() {
+        Phaser phaser = new Phaser();
+        for (int i = 0; i < 5; i++) {
+            phaser.register();
+            new Thread(() -> {
+                phaser.arriveAndAwaitAdvance();
+                log.info("register");
+            }).start();
+        }
+        log.info(" go go go ");
+    }
+
+    @Test
+    public void testMethod3() {
+        Phaser phaser = new Phaser(2);
+
+        phaser.bulkRegister(3);
+
+        for (int i = 0; i < 3; i++) {
+            new Thread(() -> {
+                phaser.arriveAndAwaitAdvance();
+                log.info("111");
+            });
+        }
+
+        log.info("" + phaser.getArrivedParties());
+        log.info("" + phaser.getUnarrivedParties());
     }
 }
