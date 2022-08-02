@@ -28,4 +28,14 @@ public class TestClass02 {
         System.out.println(mNum);
         System.out.println(size);
     }
+
+
+    @Test
+    public void testMethod2() {
+
+        String content = "ZZZaaabbbccc中文1234";
+        String resultExtractMulti = ReUtil.extractMulti("(\\w)aa(\\w)", content, "$1-$2");
+
+        System.out.println(resultExtractMulti);
+    }
 }
