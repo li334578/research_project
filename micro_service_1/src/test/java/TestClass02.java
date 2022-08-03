@@ -38,4 +38,12 @@ public class TestClass02 {
 
         System.out.println(resultExtractMulti);
     }
+
+    @Test
+    public void testMethod3() {
+        Student student = new Student(1L, "张三", 18);
+        Student clone = ObjectUtil.clone(student);
+        System.out.println(student.hashCode());
+        System.out.println(clone.hashCode());
+    }
 }
