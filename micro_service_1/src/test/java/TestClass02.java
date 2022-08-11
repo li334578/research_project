@@ -122,4 +122,12 @@ public class TestClass02 {
 
 
     }
+
+    @Test
+    public void testMethod6() {
+        ThreadPoolExecutor myThreadPool = new ThreadPoolExecutor(2, 5, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(5), new ThreadPoolExecutor.CallerRunsPolicy());
+        for (int i = 0; i < 50; i++) {
+            myThreadPool.submit(() -> System.out.println(Thread.currentThread().getName()));
+        }
+    }
 }
