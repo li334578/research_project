@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * @Date 1/8/2022 0001 下午 1:54
@@ -129,5 +129,13 @@ public class TestClass02 {
         for (int i = 0; i < 50; i++) {
             myThreadPool.submit(() -> System.out.println(Thread.currentThread().getName()));
         }
+    }
+
+    @Test
+    public void testMethod7() {
+        System.out.println(101 / 20 + 1);
+        ConcurrentHashMap<Integer, Integer> cMap = new ConcurrentHashMap<>();
+        cMap.put(2, 2);
+        System.out.println(cMap.get(1));
     }
 }
