@@ -1,4 +1,5 @@
 import cn.hutool.bloomfilter.BitMapBloomFilter;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReUtil;
@@ -137,5 +138,24 @@ public class TestClass02 {
         ConcurrentHashMap<Integer, Integer> cMap = new ConcurrentHashMap<>();
         cMap.put(2, 2);
         System.out.println(cMap.get(1));
+    }
+
+    @Test
+    public void testMethod8() {
+        System.out.println(DateUtil.format(DateUtil.date(), "yyyyddMM"));
+
+        if (ReUtil.isMatch("CGSH20220304" + "\\d{4}", "CGSH202203040002")) {
+            System.out.println("1");
+        } else {
+            System.out.println("2");
+        }
+
+        String g0 = ReUtil.getGroup0("CGSH20220304(\\d{4})", "CGSH202203040002");
+        String g1 = ReUtil.getGroup1("CGSH20220304(\\d{4})", "CGSH202203040002");
+        System.out.println(g0);
+        System.out.println(g1);
+        Integer integer = Integer.valueOf(g1);
+        System.out.println(NumberUtil.decimalFormat("0000", integer + 1));
+        System.out.println(NumberUtil.decimalFormat("0000", 562));
     }
 }
