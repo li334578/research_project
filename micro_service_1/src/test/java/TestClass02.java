@@ -1,4 +1,5 @@
 import cn.hutool.bloomfilter.BitMapBloomFilter;
+import cn.hutool.core.date.CalendarUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -157,5 +158,10 @@ public class TestClass02 {
         Integer integer = Integer.valueOf(g1);
         System.out.println(NumberUtil.decimalFormat("0000", integer + 1));
         System.out.println(NumberUtil.decimalFormat("0000", 562));
+    }
+
+    @Test
+    public void testMethod9() {
+        System.out.println(CalendarUtil.calendar().getTime());
     }
 }
