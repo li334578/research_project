@@ -164,4 +164,9 @@ public class TestClass02 {
     public void testMethod9() {
         System.out.println(CalendarUtil.calendar().getTime());
     }
+
+    @Test
+    public void testMethod10() {
+        ExecutorService executorService = Executors.newWorkStealingPool();
+    }
 }
