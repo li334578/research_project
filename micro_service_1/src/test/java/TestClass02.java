@@ -12,7 +12,9 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -168,5 +170,18 @@ public class TestClass02 {
     @Test
     public void testMethod10() {
         ExecutorService executorService = Executors.newWorkStealingPool();
+    }
+
+    @Test
+    public void testMethod11() {
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        for (String item : list) {
+            if ("2".equals(item)) {
+                list.remove(item);
+            }
+        }
+        System.out.println(list);
     }
 }
