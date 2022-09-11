@@ -1,9 +1,7 @@
 package com.company.micro_service_1.thread_test;
 
-import com.company.micro_service_1.MicroService1Application;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.concurrent.Phaser;
