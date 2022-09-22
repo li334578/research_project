@@ -202,4 +202,15 @@ public class TestClass02 {
         System.out.println(list);
     }
 
+
+    @Test
+    public void testMethod13() {
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        list.removeIf("2"::equals);
+        System.out.println(list);
+    }
+
+
 }
