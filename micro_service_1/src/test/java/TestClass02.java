@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @Date 1/8/2022 0001 下午 1:54
@@ -183,5 +185,18 @@ public class TestClass02 {
             }
         }
         System.out.println(list);
+    }
+    @Test
+    public void testMethod12() {
+        // 正则表达式，提取xxx.xxx.xxx.xxx，将IP地址从接口返回结果中提取出来
+        String rexp = ".*\"ip\":\"(.*)\",\"geo.*";
+        Pattern pat = Pattern.compile(rexp);
+        Matcher mat = pat.matcher("{\"ip\":\"240e:38a:8e31:1d00:fcce:c0e9:b91:f047\",\"geo-ip\":\"https://getjsonip.com/#plus\",\"API Help\":\"https://getjsonip.com/#docs\"}");
+        String res = "";
+        while (mat.find()) {
+            res = mat.group(1);
+            break;
+        }
+        log.info(res);
     }
 }
