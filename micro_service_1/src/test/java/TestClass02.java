@@ -1,5 +1,8 @@
 import cn.hutool.bloomfilter.BitMapBloomFilter;
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.convert.impl.BeanConverter;
 import cn.hutool.core.date.CalendarUtil;
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -7,15 +10,13 @@ import cn.hutool.core.util.ReUtil;
 import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.Digester;
 import com.company.micro_service_1.bean.Student;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -186,8 +187,36 @@ public class TestClass02 {
         }
         System.out.println(list);
     }
+
+
     @Test
     public void testMethod12() {
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        Iterator<String> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            String item = iterator.next();
+            if ("2".equals(item)) {
+                iterator.remove();
+            }
+        }
+        System.out.println(list);
+    }
+
+
+    @Test
+    public void testMethod13() {
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        list.removeIf("2"::equals);
+        System.out.println(list);
+    }
+
+
+    @Test
+    public void testMethod() {
         // 正则表达式，提取xxx.xxx.xxx.xxx，将IP地址从接口返回结果中提取出来
         String rexp = ".*\"ip\":\"(.*)\",\"geo.*";
         Pattern pat = Pattern.compile(rexp);
