@@ -1,19 +1,23 @@
 import cn.hutool.bloomfilter.BitMapBloomFilter;
-import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.convert.impl.BeanConverter;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.CalendarUtil;
-import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReUtil;
+import cn.hutool.cron.timingwheel.TimerTask;
+import cn.hutool.cron.timingwheel.TimerTaskList;
+import cn.hutool.cron.timingwheel.TimingWheel;
 import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.Digester;
-import com.company.micro_service_1.bean.Student;
-import com.google.common.collect.Lists;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
+import javax.validation.constraints.NotNull;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -216,7 +220,7 @@ public class TestClass02 {
 
 
     @Test
-    public void testMethod() {
+    public void testMethod1_1() {
         // 正则表达式，提取xxx.xxx.xxx.xxx，将IP地址从接口返回结果中提取出来
         String rexp = ".*\"ip\":\"(.*)\",\"geo.*";
         Pattern pat = Pattern.compile(rexp);
@@ -227,5 +231,74 @@ public class TestClass02 {
             break;
         }
         log.info(res);
+    }
+
+    @Test
+    public void testMethod1_2() throws InterruptedException {
+        TimerTask timerTask = new TimerTask(() -> {
+            log.info("yyy");
+        }, 0L);
+        TimingWheel timingWheel = new TimingWheel(1L, 20, 0L, taskList -> {
+            TimerTaskList taskList1 = taskList;
+            taskList1.addTask(timerTask);
+        });
+        Thread.sleep(1000L);
+    }
+
+    @Test
+    public void testMethod1_3() {
+        int a = 1;
+        int b = a << 1;
+        int c = a << 2;
+        log.info("b:" + b);
+        log.info("c:" + c);
+//        method(null);
+        method(1L);
+        method2(new MyEntityCondition());
+//        throw Exceptions.NOT_FIND_ROLE.exception();
+    }
+
+    private String method(@NonNull Long id) {
+        log.info("id is [{}]", id);
+        return "xx";
+    }
+
+    private String method2(@NonNull MyEntityCondition condition) {
+        log.info("id is [{}]", condition.getId());
+        log.info("name is [{}]", condition.getName());
+        Lists.newArrayList();
+        CollUtil.newArrayList();
+        return "xx";
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    class MyEntityCondition {
+        @NotNull
+        private Long id;
+        @NonNull
+        private String name;
+    }
+
+    @Test
+    public void testMethod1_4() {
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+        CompletableFuture<String> cf1 = CompletableFuture.supplyAsync(() -> {
+            System.out.println("执行step 1");
+            return "step1 result";
+        }, executor);
+        CompletableFuture<String> cf2 = CompletableFuture.supplyAsync(() -> {
+            System.out.println("执行step 2");
+            return "step2 result";
+        });
+        cf1.thenCombine(cf2, (result1, result2) -> {
+            System.out.println(result1 + " , " + result2);
+            System.out.println("执行step 3");
+            return "step3 result";
+        }).thenAccept(System.out::println).exceptionally(err -> {
+            log.error("e" + err.getCause());
+            return null;
+        });
     }
 }

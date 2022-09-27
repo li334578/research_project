@@ -40,7 +40,7 @@ public class DictTest {
     @Test
     public void testMethod2() {
         KeyWordComputer kwc = new KeyWordComputer(100);
-        List<Keyword> list = kwc.computeArticleTfidf(getContent("E:\\download\\Documents\\庆余年.epub"));
+        List<Keyword> list = kwc.computeArticleTfidf(getContent("E:\\Documents\\冷血.epub"));
         for (Keyword keyword : list) {
             log.info(keyword.toString());
         }
