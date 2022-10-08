@@ -2,6 +2,7 @@ package com.example.micro_service_2.controller;
 
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import lombok.extern.slf4j.Slf4j;
+import me.ahoo.cosid.provider.IdGeneratorProvider;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,8 @@ public class DynamicController {
 
     @Resource
     private ThreadPoolExecutor threadPoolExecutor;
+    @Resource
+    private IdGeneratorProvider idGeneratorProvider;
 
     @GetMapping("/test")
     public String testDynamicThreadPool() {
@@ -78,5 +81,15 @@ public class DynamicController {
                 : -1L;
         log.info("拒绝数量:{}", rejectCount);
         return "OK";
+    }
+
+    @GetMapping("/generateAsString")
+    public String generateAsString() {
+        return idGeneratorProvider.getShare().generateAsString();
+    }
+
+    @GetMapping("/as-state")
+    public Long asState(String id) {
+        return idGeneratorProvider.getShare().generate();
     }
 }

@@ -32,6 +32,11 @@
             <artifactId>hippo4j-config-spring-boot-starter</artifactId>
             <version>1.4.1</version>
         </dependency>
+        <dependency>
+            <groupId>me.ahoo.cosid</groupId>
+            <artifactId>cosid-spring-boot-starter</artifactId>
+            <version>1.14.5</version>
+        </dependency>
     </dependencies>
 
     <build>
