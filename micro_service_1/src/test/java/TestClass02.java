@@ -20,6 +20,8 @@ import org.junit.jupiter.api.Test;
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.Matcher;
@@ -313,6 +315,15 @@ public class TestClass02 {
         map.forEach((k, v) -> {
 
         });
+    }
+
+    @Test
+    public void testMethod15() {
+        Instant now = Instant.now();
+        System.out.println(now);
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        System.out.println(dateTimeFormatter.format(now));
     }
 
 }
