@@ -345,4 +345,30 @@ public class TestClass02 {
         }
 
     }
+
+    @Test
+    public void testMethod17() {
+        Thread t1 = new Thread(() -> {
+            System.out.println("t1");
+        });
+        Thread t2 = new Thread(() -> {
+            System.out.println("t2");
+            try {
+                t1.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        Thread t3 = new Thread(() -> {
+            System.out.println("t3");
+            try {
+                t2.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        t3.start();
+        t2.start();
+        t1.start();
+    }
 }
