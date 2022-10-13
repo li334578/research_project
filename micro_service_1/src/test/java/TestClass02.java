@@ -371,4 +371,20 @@ public class TestClass02 {
         t2.start();
         t1.start();
     }
+
+    @Test
+    public void testMethod18() {
+        ReentrantLock lock = new ReentrantLock();
+        ReentrantReadWriteLock lock1 = new ReentrantReadWriteLock();
+        Semaphore semaphore = new Semaphore(5);
+        semaphore.release(5);
+        try {
+            semaphore.acquire(4);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(5);
+
+        cyclicBarrier.getParties();
+    }
 }
