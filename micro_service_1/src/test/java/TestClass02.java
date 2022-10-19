@@ -24,6 +24,8 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -386,5 +388,20 @@ public class TestClass02 {
         CyclicBarrier cyclicBarrier = new CyclicBarrier(5);
 
         cyclicBarrier.getParties();
+    }
+
+    @Test
+    public void testMethod19() {
+        ExecutorService executorService = Executors.newFixedThreadPool(3, new NamedThreadFactory("myThread-", false));
+        CompletableFuture<Void> c1 = CompletableFuture.runAsync(() -> {
+            log.info("C1" + Thread.currentThread().getName());
+        }, executorService);
+
+        CompletableFuture<Void> c2 = CompletableFuture.runAsync(() -> {
+            log.info("C2" + Thread.currentThread().getName());
+        }, executorService);
+
+        log.info("main ");
+        CompletableFuture.allOf(c1, c2);
     }
 }
