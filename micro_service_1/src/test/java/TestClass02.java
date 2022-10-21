@@ -2,6 +2,7 @@ import cn.hutool.bloomfilter.BitMapBloomFilter;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.CalendarUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.thread.NamedThreadFactory;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.cron.timingwheel.TimerTask;
@@ -403,5 +404,23 @@ public class TestClass02 {
 
         log.info("main ");
         CompletableFuture.allOf(c1, c2);
+    }
+
+    @Test
+    public void testMethod20() {
+        ExecutorService executorService = Executors.newFixedThreadPool(3, new NamedThreadFactory("myThread-", false));
+        CompletableFuture<Integer> integerCompletableFuture = CompletableFuture.supplyAsync(() -> {
+            log.info("come in");
+            int a = 1 / 0;
+            return ThreadLocalRandom.current().nextInt(10);
+        }, executorService).whenComplete((v, e) -> {
+            log.info("v{}  e{}", v, e);
+        }).exceptionally(e -> {
+            log.error("报错了 .{}", e.getMessage());
+            return 0;
+        });
+
+        Integer join = integerCompletableFuture.join();
+        log.info("join {}", join);
     }
 }
