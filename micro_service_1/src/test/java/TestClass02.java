@@ -423,4 +423,21 @@ public class TestClass02 {
         Integer join = integerCompletableFuture.join();
         log.info("join {}", join);
     }
+
+    @Test
+    public void testMethod21() {
+        CompletableFuture.supplyAsync(() -> 1).thenRun(() -> {
+            System.out.println("嘿嘿");
+        }).join();
+
+        CompletableFuture.supplyAsync(() -> 1).thenAccept(item -> System.out.println(item * 2)).join();
+
+        Integer result = CompletableFuture.supplyAsync(() -> 1).thenApply(item -> item * 2).join();
+        log.info("result {}", result);
+
+        CompletableFuture<Void> voidCompletableFuture = CompletableFuture.runAsync(() -> {
+        });
+
+//        voidCompletableFuture.applyToEither()
+    }
 }
