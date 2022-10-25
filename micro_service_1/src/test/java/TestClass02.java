@@ -25,6 +25,7 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.LongAdder;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.regex.Matcher;
@@ -439,5 +440,20 @@ public class TestClass02 {
         });
 
 //        voidCompletableFuture.applyToEither()
+    }
+
+    @Test
+    public void testMethod22() {
+        ThreadLocal<Integer> threadLocal1 = new ThreadLocal<Integer>() {
+            @Override
+            protected Integer initialValue() {
+                return 0;
+            }
+        };
+        ThreadLocal<Integer> threadLocal2 = ThreadLocal.withInitial(() -> 0);
+
+        ThreadLocal<Integer> threadLocal3 = ThreadLocal.withInitial(() -> 0);
+
+        LongAdder longAdder = new LongAdder();
     }
 }
