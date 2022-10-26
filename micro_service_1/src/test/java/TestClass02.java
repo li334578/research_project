@@ -456,4 +456,20 @@ public class TestClass02 {
 
         LongAdder longAdder = new LongAdder();
     }
+
+    @Test
+    public void testMethod23() {
+        List<String> list = new ArrayList<>();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        list.add("D");
+        for (int i = 0; i < list.size(); i++) {
+            if (Objects.equals(list.get(i), "B")) {
+                list.remove(i);
+            }
+        }
+        System.out.println(list);
+    }
+
 }
