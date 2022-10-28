@@ -472,4 +472,26 @@ public class TestClass02 {
         System.out.println(list);
     }
 
+    public boolean myMethod1() {
+        log.info(" 模拟操作redis");
+        return false;
+    }
+
+    @Test
+    public void testMethod24() {
+        for (int i = 0; i < 5; i++) {
+            // 自旋操作 每五秒重试一次 5 次后不再重试
+            try {
+                if (myMethod1()) {
+                    break;
+                }
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        log.info("end ....");
+    }
+
 }
