@@ -494,4 +494,19 @@ public class TestClass02 {
         log.info("end ....");
     }
 
+    @Test
+    public void testMethod25() {
+        int count = 0;
+        while (count < 5 && !myMethod1()) {
+            // 进来了说明失败了
+            try {
+                count++;
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        log.info("end ....");
+    }
+
 }
