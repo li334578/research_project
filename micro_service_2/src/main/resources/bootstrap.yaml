@@ -43,7 +43,7 @@ spring:
       # 报警间隔，同一线程池下同一报警纬度，在 interval 时间内只会报警一次，单位秒
       alarm-interval: 8
       # 企业微信填写用户 ID（填写其它将无法达到 @ 效果）、钉钉填手机号、飞书填 ou_ 开头唯一 ID
-      receives: 18737843824
+      receives:
       # 动态线程池列表
       executors:
         - thread-pool-id: 'thread-pools'
@@ -76,7 +76,7 @@ spring:
             # 报警间隔，同一线程池下同一报警纬度，在 interval 时间内只会报警一次，单位分钟
             interval: 8
             # 企业微信填写用户 ID（填写其它将无法达到 @ 效果）、钉钉填手机号、飞书填 ou_ 开头唯一 ID
-            receives: 18737843824
+            receives:
 
 cosid:
   namespace: ${spring.application.name}

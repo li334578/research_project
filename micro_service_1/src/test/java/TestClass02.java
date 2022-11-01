@@ -28,6 +28,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.StampedLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -507,6 +508,11 @@ public class TestClass02 {
             }
         }
         log.info("end ....");
+    }
+
+    @Test
+    public void testMethod26() {
+        StampedLock stampedLock = new StampedLock();
     }
 
 }
