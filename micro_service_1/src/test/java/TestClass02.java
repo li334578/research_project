@@ -514,5 +514,27 @@ public class TestClass02 {
     public void testMethod26() {
         StampedLock stampedLock = new StampedLock();
     }
+    /**
+     * 给你一个长度固定的整数数组 arr，请你将该数组中出现的每个零都复写一遍，并将其余的元素向右平移。
+     * <p>
+     * 注意：请不要在超过该数组长度的位置写入元素。
+     * <p>
+     * 要求：请对输入的数组 就地 进行上述修改，不要从函数返回任何东西。
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode.cn/problems/duplicate-zeros
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     */
+    public void duplicateZeros(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            if (arr[i] == 0) {
+                int[] tempArr = new int[arr.length - i];
+                System.arraycopy(arr, i + 1, tempArr, 0, arr.length - i - 1);
+                arr[i + 1] = 0;
+                System.arraycopy(tempArr, 0, arr, i + 2, arr.length - i - 2);
+                i++;
+            }
+        }
+    }
 
 }
