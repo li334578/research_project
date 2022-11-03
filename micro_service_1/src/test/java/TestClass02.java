@@ -537,4 +537,13 @@ public class TestClass02 {
         }
     }
 
+    @Test
+    public void testMethod27() {
+        int[] ints = {0, 1, 7, 6, 0, 2, 0, 7};
+        duplicateZeros(ints);
+
+        System.out.println(Arrays.toString(ints));
+    }
+
+
 }
