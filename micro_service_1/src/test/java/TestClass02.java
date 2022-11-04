@@ -545,5 +545,18 @@ public class TestClass02 {
         System.out.println(Arrays.toString(ints));
     }
 
+    @Test
+    public void testMethod28() {
+        Lock lock = new ReentrantLock();
+        StampedLock stampedLock = new StampedLock();
+
+        String str = "aa bb,cc,dd";
+        str.split(",|\\s");
+        str.split("/[\\s,]/g");
+        String replace = str.replace("/[\\s,]/", "1");
+        Pattern p = Pattern.compile("/[\\s,]/g");
+        Matcher s = p.matcher("s");
+        log.info("dxd");
+    }
 
 }
