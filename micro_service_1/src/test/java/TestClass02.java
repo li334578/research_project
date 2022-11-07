@@ -26,6 +26,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.LongAdder;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.StampedLock;
@@ -558,5 +559,35 @@ public class TestClass02 {
         Matcher s = p.matcher("s");
         log.info("dxd");
     }
+
+    public void duplicateZeros2(int[] arr) {
+        int n = arr.length;
+        int top = 0;
+        int i = -1;
+        while (top < n) {
+            i++;
+            if (arr[i] != 0) {
+                top++;
+            } else {
+                top += 2;
+            }
+        }
+        int j = n - 1;
+        if (top == n + 1) {
+            arr[j] = 0;
+            j--;
+            i--;
+        }
+        while (j >= 0) {
+            arr[j] = arr[i];
+            j--;
+            if (arr[i] == 0) {
+                arr[j] = arr[i];
+                j--;
+            }
+            i--;
+        }
+    }
+
 
 }
