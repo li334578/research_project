@@ -590,4 +590,56 @@ public class TestClass02 {
     }
 
 
+//    // Jedis 缓存对象
+//    private JedisClient jedisClient;
+//    // 商品信息XML映射类
+//    private ProductInfoMapper productInfoMapper;
+//    // 缓存业务KEY前缀
+//    private static final String PRODUCT_KEY = "项目名.模块名.业务名.";
+//    // 锁-实例
+//    private Lock lock = new ReentrantLock();
+//
+//    /**
+//     * 获取商品图片路径
+//     * @param id
+//     */
+//    public /** synchronized */ String getProductImgUrlById(String id){
+//        // 获取缓存
+//        String product = jedisClient.get(PRODUCT_KEY + id);
+//        if (null == product) {
+//            // 如果没有获取锁等待3秒，SECONDS代表：秒
+//            try {
+//                if (lock.tryLock(3, TimeUnit.SECONDS)) {
+//                    try {
+//                        // 获取锁后再查一次，查到了直接返回结果
+//                        product = jedisClient.get(PRODUCT_KEY + id);
+//                        if (null == product) {
+//                            // 查询数据库
+//                            product = productInfoMapper.getProductInfoById(id);
+//                            if (null == product) {
+//                                // 假设有10000人的并发量，第一次查也没有数据，
+//                                // 那么设定为"null"，加入有效期6秒
+//                                jedisClient.setex((PRODUCT_KEY+id), "null", 6);
+//                                return product;
+//                            }
+//                            jedisClient.set((PRODUCT_KEY + id), product);
+//                            return product;
+//                        }
+//                        return product;
+//                    } catch (Exception e) {
+//                        product = jedisClient.get(PRODUCT_KEY + id);
+//                    } finally {
+//                        // 释放锁（成功、失败都必须释放，如果是lock.tryLock()方法会一直阻塞在这）
+//                        lock.unlock();
+//                    }
+//                } else {
+//                    product = jedisClient.get(PRODUCT_KEY + id);
+//                }
+//            } catch (InterruptedException e) {
+//                product = jedisClient.get(PRODUCT_KEY + id);
+//            }
+//        }
+//        return product;
+//    }
+
 }
