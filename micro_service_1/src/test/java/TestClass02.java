@@ -19,6 +19,7 @@ import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -642,4 +643,52 @@ public class TestClass02 {
 //        return product;
 //    }
 
+
+
+    @Test
+    public void testMethod29() {
+        @Data
+        @AllArgsConstructor
+        class UserBean implements Serializable {
+            private Integer id;
+            private String name;
+            private Integer age;
+
+//            @Override
+//            protected UserBean clone() throws CloneNotSupportedException {
+//                UserBean u1 = new UserBean(this.id, this.name, this.age);
+//                return u1;
+//            }
+        }
+
+        class UserBeans implements Cloneable {
+
+        }
+        UserBean userBean1 = new UserBean(1, "张三1", 20);
+        UserBean userBean2 = new UserBean(2, "张三2", 20);
+        UserBean userBean3 = new UserBean(3, "张三3", 20);
+        UserBean userBean4 = new UserBean(4, "张三4", 20);
+        UserBean userBean5 = new UserBean(5, "张三5", 20);
+        UserBean userBean6 = new UserBean(6, "张三6", 20);
+        UserBean userBean7 = new UserBean(7, "张三7", 20);
+        List<UserBean> userBeans = new ArrayList<>();
+        userBeans.add(userBean1);
+        userBeans.add(userBean2);
+        userBeans.add(userBean3);
+        userBeans.add(userBean4);
+        userBeans.add(userBean5);
+        userBeans.add(userBean6);
+        userBeans.add(userBean7);
+        List<UserBean> userBeans2 = new ArrayList<>();
+        userBeans2.addAll(userBeans);
+//        for (UserBean userBean : userBeans) {
+//            try {
+//                userBeans2.add(userBean.clone());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+        userBean1.setAge(30);
+        System.out.println("1231");
+    }
 }
