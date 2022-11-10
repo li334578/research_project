@@ -691,4 +691,9 @@ public class TestClass02 {
         userBean1.setAge(30);
         System.out.println("1231");
     }
+
+    @Test
+    public void testMethod30() {
+        System.out.println(ReUtil.getGroup1("(\\d*)-", "1735-WB001-wb001-1"));
+    }
 }
