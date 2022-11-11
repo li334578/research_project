@@ -10,10 +10,7 @@ import cn.hutool.cron.timingwheel.TimerTaskList;
 import cn.hutool.cron.timingwheel.TimingWheel;
 import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.Digester;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
@@ -695,5 +692,22 @@ public class TestClass02 {
     @Test
     public void testMethod30() {
         System.out.println(ReUtil.getGroup1("(\\d*)-", "1735-WB001-wb001-1"));
+    }
+
+    @Test
+    public void testMethod31() {
+        @Data
+        @ToString
+        class UserBean {
+            private Integer age = 1;
+            private String name;
+        }
+        UserBean userBean1 = new UserBean();
+        userBean1.setName("张三");
+        UserBean userBean2 = new UserBean();
+        userBean2.setAge(userBean1.getAge() + 1);
+        userBean2.setName("李四");
+        log.info(userBean1.toString());
+        log.info(userBean2.toString());
     }
 }
