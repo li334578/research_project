@@ -710,4 +710,23 @@ public class TestClass02 {
         log.info(userBean1.toString());
         log.info(userBean2.toString());
     }
+
+    @Test
+    public void testMethod32() {
+        Phaser phaser = new Phaser(5);
+        for (int i = 0; i < 5; i++) {
+            new Thread(() -> {
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                log.info("execute ...");
+                phaser.arrive();
+            }).start();
+        }
+
+        phaser.awaitAdvance(0);
+        log.info("end");
+    }
 }
