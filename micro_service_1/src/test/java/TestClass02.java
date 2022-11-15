@@ -729,4 +729,9 @@ public class TestClass02 {
         phaser.awaitAdvance(0);
         log.info("end");
     }
+
+    @Test
+    public void testMethod33() {
+        System.out.println(39 / 20 + 1);
+    }
 }
