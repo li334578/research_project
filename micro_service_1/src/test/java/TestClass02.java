@@ -10,6 +10,7 @@ import cn.hutool.cron.timingwheel.TimerTaskList;
 import cn.hutool.cron.timingwheel.TimingWheel;
 import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.Digester;
+import com.baomidou.mybatisplus.extension.exceptions.ApiException;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
@@ -23,6 +24,7 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicStampedReference;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -733,5 +735,19 @@ public class TestClass02 {
     @Test
     public void testMethod33() {
         System.out.println(39 / 20 + 1);
+    }
+
+    @Test
+    public void testMethod35() {
+//        AtomicInteger
+//        Collections.synchronizedCollection()
+//        Lock lock = new ReentrantLock();
+//        Condition condition = lock.newCondition();
+//        condition.
+        AtomicStampedReference<Integer> stampedReference = new AtomicStampedReference<>(1, 1);
+        boolean a = stampedReference.compareAndSet(1, 2, 1, 2);
+        boolean b = stampedReference.compareAndSet(2, 3, 1, 2);
+        log.info("A result is :" + a);
+        log.info("B result is :" + b);
     }
 }
