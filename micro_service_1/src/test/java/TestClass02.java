@@ -806,4 +806,17 @@ public class TestClass02 {
         engine.render("index.html", bar);
     }
 
+    @Test
+    public void testMethod37() {
+        List<String> list = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        AtomicInteger i = new AtomicInteger(1);
+
+        list.forEach(iterm -> list2.add(i.getAndIncrement()));
+        System.out.println(list2);
+    }
+
 }
