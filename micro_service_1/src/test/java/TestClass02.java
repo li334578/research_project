@@ -17,9 +17,9 @@ import com.dingtalk.api.response.OapiRobotSendResponse;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.Test;
 import org.icepear.echarts.Bar;
 import org.icepear.echarts.render.Engine;
+import org.junit.jupiter.api.Test;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -29,6 +29,7 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicStampedReference;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.concurrent.locks.Lock;
@@ -37,6 +38,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.StampedLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @Date 1/8/2022 0001 下午 1:54
@@ -817,6 +820,15 @@ public class TestClass02 {
 
         list.forEach(iterm -> list2.add(i.getAndIncrement()));
         System.out.println(list2);
+    }
+
+    @Test
+    public void testMethod38() {
+        List<Integer> collect = Stream.iterate(0, i -> i + 1).limit(100L).collect(Collectors.toList());
+        System.out.println(collect);
+        List<String> collect1 = Stream.generate(() -> "hello").limit(5L).collect(Collectors.toList());
+        System.out.println(collect1);
+        Pattern.compile("\\d+").splitAsStream("18734587978463").forEach(System.out::println);
     }
 
 }
