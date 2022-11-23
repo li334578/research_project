@@ -831,4 +831,30 @@ public class TestClass02 {
         Pattern.compile("\\d+").splitAsStream("18734587978463").forEach(System.out::println);
     }
 
+    @Test
+    public void testMethod39() {
+        String rg = "\\d{1,}./.[,|，]\\d{1,}./.*";
+        boolean match = ReUtil.isMatch(rg, "每箱8包*500个\n" +
+                "（500个/包，8包/箱）");
+        boolean match1 = ReUtil.isMatch(rg, "24块/盒，4盒/箱");
+        System.out.println(match);
+        System.out.println(match1);
+        Pattern compile = Pattern.compile("([\\d|\\.]+)" +
+                "([^\\)）（(/]*)" +
+                "/" +
+                "([^\\)）（(/,，]+)" +
+                "[,|，]*" +
+                "([\\d|\\.]+)*" +
+                "([^\\)）（(/]*)" +
+                "/*" +
+                "([^\\)）（(/]*)");
+        System.out.println(ReUtil.getAllGroups(compile, "（250ml/瓶）", false));
+        System.out.println(ReUtil.getAllGroups(compile, "500个/包，10包/箱", false));
+        System.out.println(ReUtil.getAllGroups(compile, "10套/盒", false));
+        System.out.println(ReUtil.getAllGroups(compile, "每箱8包*500个\n" +
+                "（500个/包，8包/箱）", false));
+        System.out.println(ReUtil.getAllGroups(compile, "500μL/支", false));
+        System.out.println(ReUtil.getAllGroups(compile, "1.5ml/支", false));
+    }
+
 }
