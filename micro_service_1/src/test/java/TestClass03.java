@@ -1,7 +1,9 @@
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
@@ -48,6 +50,14 @@ public class TestClass03 {
                 buf[start] = buf[i];
                 buf[i] = temp;
             }
+        }
+    }
+
+    public List<String> perm2(List<String> setNo) {
+        if (CollUtil.isEmpty(setNo) || setNo.size() == 1) {
+            return setNo;
+        } else {
+            return perm3(setNo, 0, setNo.size() - 1);
         }
     }
 }
