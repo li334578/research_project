@@ -60,4 +60,21 @@ public class TestClass03 {
             return perm3(setNo, 0, setNo.size() - 1);
         }
     }
+
+    private List<String> perm3(List<String> setNo, int start, int end) {
+        if (start == end) {
+            return setNo;
+        } else {
+            for (int i = start; i <= end; i++) {
+                String temp = setNo.get(start);
+                setNo.set(start, setNo.get(i));
+                setNo.set(i, temp);
+                perm3(setNo, start + 1, end);
+                temp = setNo.get(start);
+                setNo.set(start, setNo.get(i));
+                setNo.set(i, temp);
+            }
+        }
+        return null;
+    }
 }
