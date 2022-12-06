@@ -3,6 +3,7 @@ import cn.hutool.core.util.ReUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
@@ -77,4 +78,42 @@ public class TestClass03 {
         }
         return null;
     }
+
+    @Test
+    public void testMethod4() {
+//        CountDownLatch countDownLatch = new CountDownLatch(100 * 1000);
+//        long start = System.currentTimeMillis();
+//        for (int i = 0; i < 100; i++) {
+//            for (int j = 0; j < 1000; j++) {
+//                new Thread(() -> {
+//                    List<String> setList = new ArrayList<>();
+//                    setList.add("T398");
+//                    setList.add("T291");
+//                    setList.add("T001");
+//                    ArrayList<ArrayList<String>> sortResult = AllSort.getSort(new ArrayList<>(setList));
+//                    sortResult.stream().map(item -> String.join("|", item)).forEach(System.out::println);
+//                    countDownLatch.countDown();
+//                }).start();
+//            }
+//        }
+//
+//        try {
+//            countDownLatch.await();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        long end = System.currentTimeMillis();
+//        log.info("总耗时为{} ms,每次耗时为{}", end - start, (end - start) / 1000);
+
+        List<String> setList = new ArrayList<>();
+        setList.add("T345-4");
+        setList.add("T347-4");
+        setList.add("T380-1");
+        setList.add("T425");
+        setList.add("T291");
+        // T345-4|T347-4|T380-1|T425|T291
+        ArrayList<ArrayList<String>> sortResult = AllSort.getSort(new ArrayList<>(setList));
+        sortResult.stream().map(item -> String.join("|", item)).forEach(System.out::println);
+    }
+
 }
