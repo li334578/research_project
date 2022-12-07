@@ -3,8 +3,7 @@ import cn.hutool.core.util.ReUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
@@ -114,6 +113,28 @@ public class TestClass03 {
         // T345-4|T347-4|T380-1|T425|T291
         ArrayList<ArrayList<String>> sortResult = AllSort.getSort(new ArrayList<>(setList));
         sortResult.stream().map(item -> String.join("|", item)).forEach(System.out::println);
+    }
+
+    @Test
+    public void testMethod5() {
+        Map<String, Integer> map = new HashMap<>();
+        Set<String> allEmployeeSet = new HashSet<>();
+        allEmployeeSet.add("zhangsan");
+        allEmployeeSet.add("lisi");
+        allEmployeeSet.add("wangwu");
+        for (String employee : allEmployeeSet) {
+            // 每个员工给三千底薪
+            map.computeIfAbsent(employee, v -> 3000);
+        }
+        // 奖金
+        Set<String> bonusEmployeeSet = new HashSet<>();
+        bonusEmployeeSet.add("zhangsan");
+        bonusEmployeeSet.add("lisi");
+        for (String employee : bonusEmployeeSet) {
+            map.computeIfPresent(employee, (k, v) -> v + 500);
+        }
+        log.info("======");
+        map.forEach((k, v) -> log.info("{}的工资为{}", k, v));
     }
 
 }
