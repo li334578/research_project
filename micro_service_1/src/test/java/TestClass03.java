@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 /**
@@ -137,4 +138,31 @@ public class TestClass03 {
         map.forEach((k, v) -> log.info("{}的工资为{}", k, v));
     }
 
+    @Test
+    public void testMethod6() {
+        Map<String, Integer> map = new HashMap<>();
+        Set<String> allEmployeeSet = new HashSet<>();
+        allEmployeeSet.add("zhangsan");
+        allEmployeeSet.add("lisi");
+        allEmployeeSet.add("wangwu");
+        for (String employee : allEmployeeSet) {
+            // 每个员工给三千底薪
+            map.computeIfAbsent(employee, v -> 3000);
+        }
+        // 有奖金的员工的基础工资的和
+        AtomicReference<Integer> bonusCount = new AtomicReference<>(0);
+        // 奖金
+        Set<String> bonusEmployeeSet = new HashSet<>();
+        bonusEmployeeSet.add("zhangsan");
+        bonusEmployeeSet.add("lisi");
+        for (String employee : bonusEmployeeSet) {
+            map.computeIfPresent(employee, (k, v) -> {
+                bonusCount.updateAndGet(v1 -> v1 + v);
+                return v + 500;
+            });
+        }
+        log.info("======");
+        map.forEach((k, v) -> log.info("{}的工资为{}", k, v));
+        log.info("有奖金的员工的基础工资的和{}", bonusCount.get());
+    }
 }
