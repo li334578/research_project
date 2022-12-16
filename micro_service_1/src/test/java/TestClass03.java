@@ -165,4 +165,9 @@ public class TestClass03 {
         map.forEach((k, v) -> log.info("{}的工资为{}", k, v));
         log.info("有奖金的员工的基础工资的和{}", bonusCount.get());
     }
+
+    @Test
+    public void testMethod7() {
+        Pattern.compile("\\d").splitAsStream("1879465464654").forEach(System.out::println);
+    }
 }
