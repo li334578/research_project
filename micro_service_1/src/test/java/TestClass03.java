@@ -170,4 +170,13 @@ public class TestClass03 {
     public void testMethod7() {
         Pattern.compile("\\d").splitAsStream("1879465464654").forEach(System.out::println);
     }
+
+    @Test
+    public void testMethod8() {
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10, 100, 10L, TimeUnit.SECONDS, new ArrayBlockingQueue<>(100));
+        threadPoolExecutor.submit(() -> System.out.println(123));
+
+        ForkJoinPool forkJoinPool = new ForkJoinPool(4);
+        forkJoinPool.submit(() -> System.out.println(123));
+    }
 }
