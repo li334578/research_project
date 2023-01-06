@@ -4,9 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 /**
  * @Date 28/11/2022 0028 下午 3:37
@@ -178,5 +179,23 @@ public class TestClass03 {
 
         ForkJoinPool forkJoinPool = new ForkJoinPool(4);
         forkJoinPool.submit(() -> System.out.println(123));
+    }
+
+    @Test
+    public void testMethod9() {
+        ThreadLocal<String> local = new ThreadLocal<>();
+
+        CountDownLatch countDownLatch = new CountDownLatch(10);
+        IntStream.range(0, 10).forEach(i -> new Thread(() -> {
+            local.set(Thread.currentThread().getName() + ":" + i);
+            System.out.println("线程：" + Thread.currentThread().getName() + ",local:" + local.get());
+            countDownLatch.countDown();
+        }).start());
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
