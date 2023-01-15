@@ -46,6 +46,10 @@ public class OrderController {
 
     @PostMapping("/")
     public void updateOrder(OrderDto orderDto) {
+        updateById(orderDto);
+    }
+
+    private void updateById(OrderDto orderDto) {
         QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", orderDto.getId());
         Order entity = new Order();
