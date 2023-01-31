@@ -205,4 +205,16 @@ public class TestClass03 {
         Integer i2 = new Integer(100);
         System.out.println(i1 == i2);
     }
+    private static volatile boolean flag = true;
+
+    public static void main(String[] args) throws InterruptedException{
+        new Thread(() -> {
+            while (flag) {
+                // do sth
+            }
+            System.out.println("end");
+        }).start();
+        Thread.sleep(1000);
+        flag = false;
+    }
 }
