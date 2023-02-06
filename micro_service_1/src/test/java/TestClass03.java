@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -204,6 +205,44 @@ public class TestClass03 {
         Integer i1 = new Integer(100);
         Integer i2 = new Integer(100);
         System.out.println(i1 == i2);
+    }
+
+    private static final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 10, 60, TimeUnit.SECONDS,
+            new ArrayBlockingQueue<>(2000), new ThreadPoolExecutor.CallerRunsPolicy());
+    @Test
+    public void testMethod11() {
+        CountDownLatch countDownLatch = new CountDownLatch(50);
+        long begin = System.currentTimeMillis();
+        List<Integer> collect = IntStream.range(0, 50).parallel().mapToObj(i -> {
+            FutureTask<Integer> future = new FutureTask<>(() -> {
+                if (i < 5) {
+                    TimeUnit.SECONDS.sleep(5);
+                }
+                if (!Thread.currentThread().isInterrupted()) {
+                    log.info("finalI = {} 当前线程是 {}", i, Thread.currentThread().getName());
+                }
+                return i;
+            });
+            threadPoolExecutor.submit(future);
+            try {
+                return future.get(1, TimeUnit.SECONDS);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException | TimeoutException e) {
+                log.error("走到异常了 {}", i);
+                countDownLatch.countDown();
+                future.cancel(true);
+                return null;
+            }
+        }).filter(Objects::nonNull).peek(item -> countDownLatch.countDown()).collect(Collectors.toList());
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        collect.forEach(System.out::println);
+        threadPoolExecutor.shutdown();
+        System.out.println("最终耗时" + (System.currentTimeMillis() - begin) + "毫秒");
     }
     private static volatile boolean flag = true;
 
