@@ -1,6 +1,7 @@
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReUtil;
 import lombok.extern.slf4j.Slf4j;
+import net.datafaker.Faker;
 import org.junit.Test;
 
 import java.util.*;
@@ -244,6 +245,21 @@ public class TestClass03 {
         threadPoolExecutor.shutdown();
         System.out.println("最终耗时" + (System.currentTimeMillis() - begin) + "毫秒");
     }
+    @Test
+    public void testMethod12() {
+        Faker faker = new Faker();
+
+        String name = faker.name().fullName(); // Miss Samanta Schmidt
+        String firstName = faker.name().firstName(); // Emory
+        String lastName = faker.name().lastName(); // Barton
+
+        String streetAddress = faker.address().streetAddress();
+
+
+        log.info("name is {}, {} , {} , {}", name, firstName, lastName, streetAddress);
+    }
+
+
     private static volatile boolean flag = true;
 
     public static void main(String[] args) throws InterruptedException{
