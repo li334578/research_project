@@ -1,5 +1,8 @@
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReUtil;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import lombok.extern.slf4j.Slf4j;
 import net.datafaker.Faker;
 import org.junit.Test;
@@ -259,7 +262,24 @@ public class TestClass03 {
         log.info("name is {}, {} , {} , {}", name, firstName, lastName, streetAddress);
     }
 
+    @Test
+    public void testMethod13() {
+        // 所有key计算过程一致的时候适用
+        LoadingCache<String, String> loadingCache = CacheBuilder.newBuilder().maximumSize(2)
+                .build(new CacheLoader<String, String>() {
+                    @Override
+                    public String load(String key) {
+                        System.out.println(key + "真正计算了！");
+                        return "cache-" + key;
+                    }
+                });
 
+        System.out.println(loadingCache.getUnchecked("key1"));
+        System.out.println(loadingCache.getUnchecked("key1"));
+
+        System.out.println(loadingCache.getUnchecked("key2"));
+        System.out.println(loadingCache.getUnchecked("key2"));
+    }
     private static volatile boolean flag = true;
 
     public static void main(String[] args) throws InterruptedException{
