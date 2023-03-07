@@ -1,5 +1,6 @@
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReUtil;
+import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -280,6 +281,36 @@ public class TestClass03 {
         System.out.println(loadingCache.getUnchecked("key2"));
         System.out.println(loadingCache.getUnchecked("key2"));
     }
+
+    @Test
+    public void testMethod14() throws ExecutionException {
+        // 不同key不同计算方式的情况
+        Cache<Object, Object> cache = CacheBuilder.newBuilder().build();
+        Object cacheKey1 = cache.get("key1", () -> {
+            System.out.println("key1真正计算了");
+            return "key1计算方式";
+        });
+        System.out.println(cacheKey1);
+
+        cacheKey1 = cache.get("key1", () -> {
+            System.out.println("key1真正计算了");
+            return "key1计算方式";
+        });
+        System.out.println(cacheKey1);
+
+        Object cacheKey2 = cache.get("key2", () -> {
+            System.out.println("key2真正计算了");
+            return "key2计算方式";
+        });
+        System.out.println(cacheKey2);
+
+        cacheKey2 = cache.get("key2", () -> {
+            System.out.println("key2真正计算了");
+            return "key2计算方式";
+        });
+        System.out.println(cacheKey2);
+    }
+
     private static volatile boolean flag = true;
 
     public static void main(String[] args) throws InterruptedException{
