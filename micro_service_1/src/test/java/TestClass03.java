@@ -323,4 +323,14 @@ public class TestClass03 {
         Thread.sleep(1000);
         flag = false;
     }
+
+    @Test
+    public void testMethod15() throws ExecutionException {
+        // 直接put进去
+        Cache<Object, Object> cache = CacheBuilder.newBuilder().build();
+        cache.put("key1", "cache-key1");
+        // 缓存中没有值会使用后边的
+        System.out.println(cache.get("key1", () -> "callable cache-key1"));
+    }
+
 }
