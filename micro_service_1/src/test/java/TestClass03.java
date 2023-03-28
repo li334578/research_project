@@ -333,4 +333,87 @@ public class TestClass03 {
         System.out.println(cache.get("key1", () -> "callable cache-key1"));
     }
 
+    @Test
+    public void testMethod16() {
+        // leetCode 338
+        System.out.println(countBitPart1(5));
+        System.out.println(countBitPart1(4));
+        System.out.println(countBitPart1(3));
+        System.out.println(countBitPart1(2));
+        System.out.println(countBitPart1(1));
+        System.out.println(countBitPart1(0));
+        System.out.println(Arrays.toString(countBits1(5)));
+        System.out.println(Arrays.toString(countBits2(5)));
+        //
+        System.out.println(Arrays.toString(countBits3(5)));
+
+//        System.out.println(countBitPart2(5, new int[6]));
+    }
+
+    /**
+     * 暴力解法
+     */
+    public int[] countBits1(int n) {
+        int[] ints = new int[n + 1];
+        for (int i = 0; i <= n; i++) {
+            ints[i] = countBitPart1(i);
+        }
+        return ints;
+    }
+
+    public int countBitPart1(int n) {
+        if (n == 0 || n == 1) return n;
+        int count = 0;
+        int temp = n >>> 1;
+        if (temp << 1 != n) {
+            count += 1;
+        }
+        return count + countBitPart1(n >>> 1);
+    }
+
+    /**
+     * 记忆数组
+     */
+    public int[] countBits2(int n) {
+        if (n == 0) return new int[]{0};
+        int[] ints = new int[n + 1];
+        int[] arr = new int[n + 1];
+        arr[0] = 0;
+        arr[1] = 1;
+        for (int i = n; i >= 0; i--) {
+            ints[i] = countBitPart2(i, arr);
+        }
+        return ints;
+    }
+
+    public int countBitPart2(int n, int[] arr) {
+        if (n == 0 || arr[n] != 0) return arr[n];
+        int count = 0;
+        int temp = n >>> 1;
+        if (temp << 1 != n) {
+            count += 1;
+        }
+        // c(1) + c(2)
+        int result = count + countBitPart2(n >>> 1, arr);
+        arr[n] = result;
+        return result;
+    }
+
+    /**
+     * 动态规划
+     */
+    public int[] countBits3(int n) {
+        if (n == 0) return new int[]{0};
+        int[] ints = new int[n + 1];
+        ints[0] = 0;
+        ints[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            int index, temp;
+            temp = i >>> 1;
+            index = temp << 1 == i ? 0 : 1;
+            ints[i] = ints[index] + ints[temp];
+        }
+        return ints;
+    }
+
 }
