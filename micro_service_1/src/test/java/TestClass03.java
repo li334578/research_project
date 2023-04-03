@@ -416,4 +416,35 @@ public class TestClass03 {
         return ints;
     }
 
+    @Test
+    public void testMethod17() {
+        // 设置了最大缓存条目为3 如果maximumSize传入0，则所有key都将不进行缓存！
+        LoadingCache<String, String> loadingCache = CacheBuilder.newBuilder().maximumSize(3)
+                .build(new CacheLoader<String, String>() {
+                    @Override
+                    public String load(String key) {
+                        System.out.println(key + "真正计算了");
+                        return "cached-" + key;
+                    }
+                });
+
+        System.out.println("第一次访问");
+        loadingCache.getUnchecked("key1");
+        loadingCache.getUnchecked("key2");
+        loadingCache.getUnchecked("key3");
+
+        System.out.println("第二次访问");
+        loadingCache.getUnchecked("key1");
+        loadingCache.getUnchecked("key2");
+        loadingCache.getUnchecked("key3");
+
+        System.out.println("开始剔除");
+        loadingCache.getUnchecked("key4");
+
+        System.out.println("第三次访问");
+        loadingCache.getUnchecked("key3");
+        loadingCache.getUnchecked("key2");
+        loadingCache.getUnchecked("key1");
+    }
+
 }

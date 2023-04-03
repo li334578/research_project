@@ -99,5 +99,7 @@ public class CardsInLine {
         System.out.println(win1(arr));
         System.out.println(win2(arr));
         System.out.println(win3(arr));
+        int[] arr1 = new int[]{5,3,4,5};
+        System.out.println(win1(arr1));
     }
 }
