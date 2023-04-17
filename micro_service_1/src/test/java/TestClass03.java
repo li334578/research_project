@@ -446,5 +446,47 @@ public class TestClass03 {
         loadingCache.getUnchecked("key2");
         loadingCache.getUnchecked("key1");
     }
+    @Test
+    public void testMethod18() {
+        // weigher 设置权重值 如果所有缓存的key的权重之和大于了我们指定的最大权重，那么将执行LRU淘汰策略：
+        LoadingCache<String, String> loadingCache = CacheBuilder.newBuilder().maximumWeight(6).weigher((key, value) -> {
+                    if (key.equals("key1")) {
+                        return 1;
+                    }
+                    if (key.equals("key2")) {
+                        return 2;
+                    }
+                    if (key.equals("key3")) {
+                        return 3;
+                    }
 
+                    if (key.equals("key4")) {
+                        return 1;
+                    }
+                    return 0;
+                })
+                .build(new CacheLoader<String, String>() {
+                    @Override
+                    public String load(String key) {
+                        System.out.println(key + "真正计算了");
+                        return "cached-" + key;
+                    }
+                });
+
+        System.out.println("第一次访问");
+        loadingCache.getUnchecked("key1");
+        loadingCache.getUnchecked("key2");
+        loadingCache.getUnchecked("key3");
+
+        System.out.println("第二次访问");
+        loadingCache.getUnchecked("key1");
+        loadingCache.getUnchecked("key2");
+        loadingCache.getUnchecked("key3");
+
+        System.out.println("开始剔除");
+        loadingCache.getUnchecked("key4");
+        loadingCache.getUnchecked("key3");
+        loadingCache.getUnchecked("key2");
+        loadingCache.getUnchecked("key1");
+    }
 }
