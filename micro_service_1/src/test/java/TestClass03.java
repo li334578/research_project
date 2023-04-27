@@ -4,6 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.datafaker.Faker;
 import org.junit.Test;
@@ -489,4 +490,47 @@ public class TestClass03 {
         loadingCache.getUnchecked("key2");
         loadingCache.getUnchecked("key1");
     }
+
+    @Test
+    public void testMethod19() throws Exception {
+        // expireAfterAccess 当某个缓存key自最后一次访问（读取或者写入）超过指定时间后，那么这个缓存key将失效。
+        // expireAfterWrite 这个方法只关心写入
+        LoadingCache<String, String> loadingCache = CacheBuilder.newBuilder().expireAfterAccess(3, TimeUnit.SECONDS)
+                .build(new CacheLoader<String, String>() {
+                    @Override
+                    public String load(String key) {
+                        System.out.println(key + "真正计算了");
+                        return "cached-" + key;
+                    }
+                });
+
+        System.out.println("第一次访问（写入）");
+        loadingCache.getUnchecked("key1");
+
+        System.out.println("第二次访问");
+        loadingCache.getUnchecked("key1");
+
+        TimeUnit.SECONDS.sleep(3);
+        System.out.println("过3秒后访问");
+        loadingCache.getUnchecked("key1");
+    }
+
+    @Test
+    public void testMethod20() throws Exception {
+        // expireAfterWrite 这个方法只关心写入
+        LoadingCache<String, String> loadingCache = CacheBuilder.newBuilder().expireAfterWrite(3, TimeUnit.SECONDS)
+                .build(new CacheLoader<String, String>() {
+                    @Override
+                    public String load(String key) throws Exception {
+                        System.out.println(key + "真正计算了");
+                        return "cached-" + key;
+                    }
+                });
+        for (int i = 0; i < 4; i++) {
+            System.out.println(new Date());
+            loadingCache.getUnchecked("key1"); // 首次执行的时候，为写入
+            TimeUnit.SECONDS.sleep(1);
+        }
+    }
+
 }
