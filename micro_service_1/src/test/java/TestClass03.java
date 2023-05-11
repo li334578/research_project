@@ -533,4 +533,73 @@ public class TestClass03 {
         }
     }
 
+    @Test
+    public void testMethod21() throws ExecutionException {
+        // 不同key不同计算方式的情况
+        Cache<Object, Object> cache = CacheBuilder.newBuilder().build();
+        Object cacheKey1 = cache.get("key1", () -> {
+            System.out.println("key1真正计算了");
+            return "key1计算方式";
+        });
+        System.out.println(cacheKey1);
+
+        cacheKey1 = cache.get("key1", () -> {
+            System.out.println("key1真正计算了");
+            return "key1计算方式";
+        });
+        System.out.println(cacheKey1);
+
+        Object cacheKey2 = cache.get("key2", () -> {
+            System.out.println("key2真正计算了");
+            return "key2计算方式";
+        });
+        System.out.println(cacheKey2);
+
+        cacheKey2 = cache.get("key2", () -> {
+            System.out.println("key2真正计算了");
+            return "key2计算方式";
+        });
+        System.out.println(cacheKey2);
+    }
+
+    @Test
+    public void testMethod22() throws ExecutionException {
+        // 直接put进去
+        Cache<Object, Object> cache = CacheBuilder.newBuilder().build();
+        cache.put("key1", "cache-key1");
+        // 缓存中没有值会使用后边的
+        System.out.println(cache.get("key1", () -> "callable cache-key1"));
+    }
+
+    @Test
+    public void testMethod23() {
+        // 设置了最大缓存条目为3 如果maximumSize传入0，则所有key都将不进行缓存！
+        LoadingCache<String, String> loadingCache = CacheBuilder.newBuilder().maximumSize(3)
+                .build(new CacheLoader<String, String>() {
+                    @Override
+                    public String load(String key) {
+                        System.out.println(key + "真正计算了");
+                        return "cached-" + key;
+                    }
+                });
+
+        System.out.println("第一次访问");
+        loadingCache.getUnchecked("key1");
+        loadingCache.getUnchecked("key2");
+        loadingCache.getUnchecked("key3");
+
+        System.out.println("第二次访问");
+        loadingCache.getUnchecked("key1");
+        loadingCache.getUnchecked("key2");
+        loadingCache.getUnchecked("key3");
+
+        System.out.println("开始剔除");
+        loadingCache.getUnchecked("key4");
+
+        System.out.println("第三次访问");
+        loadingCache.getUnchecked("key3");
+        loadingCache.getUnchecked("key2");
+        loadingCache.getUnchecked("key1");
+    }
+
 }
