@@ -669,4 +669,67 @@ public class TestClass03 {
         System.out.println("过3秒后访问");
         loadingCache.getUnchecked("key1");
     }
+
+    @Test
+    public void testMethod26() throws Exception {
+        // expireAfterWrite 这个方法只关心写入
+        LoadingCache<String, String> loadingCache = CacheBuilder.newBuilder().expireAfterWrite(3, TimeUnit.SECONDS)
+                .build(new CacheLoader<String, String>() {
+                    @Override
+                    public String load(String key) throws Exception {
+                        System.out.println(key + "真正计算了");
+                        return "cached-" + key;
+                    }
+                });
+        for (int i = 0; i < 4; i++) {
+            System.out.println(new Date());
+            loadingCache.getUnchecked("key1"); // 首次执行的时候，为写入
+            TimeUnit.SECONDS.sleep(1);
+        }
+    }
+
+    @Data
+    private static class MyKey {
+        String key;
+
+        public MyKey(String key) {
+            this.key = key;
+        }
+    }
+
+    @Test
+    public void testMethod27() throws Exception {
+        // CacheBuilder.weakKeys() 当我们使用了weakKeys() 后，Guava cache将以弱引用 的方式去存储缓存key,
+        // 那么根据弱引用的定义：当发生垃圾回收时，不管当前系统资源是否充足，弱引用都会被回收
+        // CacheBuilder.weakValues() 针对的是缓存值！
+        // CacheBuilder.softValues() 软引用.当发生垃圾回收时，只有当系统资源不足时，才会回收！。
+        // 主动清除缓存
+        // Cache.invalidate(key)
+        // Cache.invalidateAll(keys)
+        // Cache.invalidateAll()
+        LoadingCache<MyKey, String> loadingCache = CacheBuilder.newBuilder().weakKeys()
+                .build(new CacheLoader<MyKey, String>() {
+                    @Override
+                    public String load(MyKey key) {
+                        System.out.println(key.getKey() + "真正计算了");
+                        return "cached-" + key.getKey();
+                    }
+                });
+
+        MyKey key = new MyKey("key1");
+        System.out.println("第一次访问");
+        loadingCache.getUnchecked(key);
+        System.out.println(loadingCache.asMap());
+
+        System.out.println("第二次访问");
+        loadingCache.getUnchecked(key);
+        System.out.println(loadingCache.asMap());
+
+        System.out.println("key失去强引用GC后访问");
+        key = null;
+        System.gc();
+        TimeUnit.SECONDS.sleep(3);
+        System.out.println(loadingCache.asMap());
+    }
+
 }
