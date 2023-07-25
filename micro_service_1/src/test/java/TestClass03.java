@@ -732,4 +732,48 @@ public class TestClass03 {
         System.out.println(loadingCache.asMap());
     }
 
+    @Test
+    public void testMethod28() throws Exception {
+        // 缓存失效监听器
+        // 如果缓存失效后，我不再进行任何操作，那么这个缓存监听器就得不到调用！
+        // Guava cache也提供给我们主动清理的方法：Cache.cleanUp()
+        LoadingCache<String, String> loadingCache = CacheBuilder.newBuilder().removalListener(notification -> {
+            System.out.printf("缓存 %s 因为 %s 失效了，它的value是%s%n", notification.getKey(), notification.getCause(),
+                    notification.getValue());
+        }).expireAfterAccess(3, TimeUnit.SECONDS).build(new CacheLoader<String, String>() {
+            @Override
+            public String load(String key) {
+                System.out.println(key + "真正计算了");
+                return "cached-" + key;
+            }
+        });
+
+        System.out.println("第一次访问（写入）");
+        loadingCache.getUnchecked("key1");
+
+        System.out.println("第二次访问");
+        loadingCache.getUnchecked("key1");
+        TimeUnit.SECONDS.sleep(3);
+
+        System.out.println("3秒后");
+        loadingCache.getUnchecked("key1");
+    }
+
+    @Test
+    public void testMethod29() throws InterruptedException {
+        // CacheBuilder中提供了refreshAfterWrite 用来指定缓存key写入多久后重新进行计算并缓存
+        LoadingCache<String, String> loadingCache = CacheBuilder.newBuilder().refreshAfterWrite(1, TimeUnit.SECONDS)
+                .build(new CacheLoader<String, String>() {
+                    @Override
+                    public String load(String key) {
+                        System.out.println(key + "真正计算了");
+                        return "cached-" + key;
+                    }
+                });
+        for (int i = 0; i < 3; i++) {
+            loadingCache.getUnchecked("key1");
+            TimeUnit.SECONDS.sleep(2);
+        }
+    }
+
 }
