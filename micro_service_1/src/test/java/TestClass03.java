@@ -776,4 +776,48 @@ public class TestClass03 {
         }
     }
 
+    private int invokeCount = 0;
+
+    public int realAction(int num) {
+        invokeCount++;
+        System.out.printf("当前执行第 %d 次,num:%d%n", invokeCount, num);
+        if (num <= 0) {
+            throw new IllegalArgumentException();
+        }
+        return num;
+    }
+
+    @Test
+    public void testMethod30() {
+        // 通过RetryerBuilder来构造一个重试器，通过RetryerBuilder可以设置什么时候需要重试（即重试时机）、停止重试策略、失败等待时间间隔策略、任务执行时长限制策略
+        Retryer<Integer> retryer = RetryerBuilder.<Integer>newBuilder()
+                // 非正常进行重试
+                .retryIfRuntimeException()
+                // 偶数则进行重试
+                .retryIfResult(result -> result % 2 == 0)
+                // 设置最大执行次数3次
+                .withStopStrategy(StopStrategies.stopAfterAttempt(3)).build();
+
+        try {
+            invokeCount = 0;
+            retryer.call(() -> realAction(0));
+        } catch (Exception e) {
+            System.out.println("执行0，异常：" + e.getMessage());
+        }
+
+        try {
+            invokeCount = 0;
+            retryer.call(() -> realAction(1));
+        } catch (Exception e) {
+            System.out.println("执行1，异常：" + e.getMessage());
+        }
+
+        try {
+            invokeCount = 0;
+            retryer.call(() -> realAction(2));
+        } catch (Exception e) {
+            System.out.println("执行2，异常：" + e.getMessage());
+        }
+    }
+
 }
