@@ -4,6 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.util.concurrent.RateLimiter;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.datafaker.Faker;
@@ -818,6 +819,24 @@ public class TestClass03 {
         } catch (Exception e) {
             System.out.println("执行2，异常：" + e.getMessage());
         }
+    }
+
+    @Test
+    public void testMethod31() {
+        System.out.println(new Date());
+        RateLimiter rateLimiter = RateLimiter.create(10);
+    }
+
+    @Test
+    public void testMethod32() {
+        List<Boolean> list = new ArrayList<>();
+        list.add(true);
+        list.add(false);
+        list.add(true);
+        list.add(false);
+        list.add(null);
+        List<Boolean> collect = list.stream().sorted((o1, o2) -> o1 == null ? 1 : o2.compareTo(o1)).collect(Collectors.toList());
+        System.out.println(collect);
     }
 
 }
