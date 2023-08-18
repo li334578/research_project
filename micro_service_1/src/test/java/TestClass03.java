@@ -1,5 +1,6 @@
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReUtil;
+import cn.hutool.core.util.StrUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.datafaker.Faker;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -838,5 +840,70 @@ public class TestClass03 {
         List<Boolean> collect = list.stream().sorted((o1, o2) -> o1 == null ? 1 : o2.compareTo(o1)).collect(Collectors.toList());
         System.out.println(collect);
     }
+
+    private String reg = "([A|C|G|T|I|D|\\d]?[G|N|u|l|P|r|e|s|n|t]*)\\.?([A|C|G|T|I|D|\\d]?[G|N|u|l|P|r|e|s|n|t]*)";
+    private String resultFormat = "{}:{}";
+
+    @Test
+    public void testMethod33() {
+        System.out.println(convertResult("Present.Null"));
+        System.out.println(convertResult("Null.Present"));
+        System.out.println(convertResult("T"));
+        System.out.println(convertResult("CC"));
+        System.out.println(convertResult("1G"));
+        System.out.println(convertResult("1G.2G"));
+        System.out.println(convertResult("2G"));
+        System.out.println(convertResult("Pass"));
+        System.out.println(convertResult("Fail"));
+        System.out.println("==================");
+        System.out.println(convertResult(""));
+        System.out.println(convertResult("ID"));
+        System.out.println(convertResult("DI"));
+        System.out.println(convertResult("II"));
+        System.out.println(convertResult("D"));
+        System.out.println(isDifferenceWithinFivePercent(new BigDecimal("0.10"), new BigDecimal("0.1905")));
+        System.out.println(isDifferenceWithinFivePercent(new BigDecimal("0.10"), new BigDecimal("0.08")));
+        System.out.println(isDifferenceWithinFivePercent(new BigDecimal("0.10"), new BigDecimal("0.0405")));
+        System.out.println(resortGeneResult("AG"));
+        System.out.println(resortGeneResult("GA"));
+        System.out.println(resortGeneResult("CG"));
+        System.out.println(resortGeneResult("GC"));
+        System.out.println(resortGeneResult("AA"));
+    }
+
+
+    public boolean isDifferenceWithinFivePercent(BigDecimal a, BigDecimal b) {
+        BigDecimal difference = a.subtract(b).abs(); // 计算绝对差值
+        BigDecimal fivePercent = new BigDecimal("0.05"); // 5%
+        return difference.compareTo(fivePercent) <= 0; // 判断绝对差值是否小于等于5%
+    }
+    public String convertResult(String result) {
+        if (Objects.equals(result, "Pass") || Objects.equals(result, "Fail")) {
+            return result;
+        }
+        String g1 = ReUtil.get(reg, result, 1);
+        String g2 = ReUtil.get(reg, result, 2);
+        if (StrUtil.isEmpty(g2)) {
+            if (StrUtil.isEmpty(g1)) {
+                return "";
+            } else {
+                return StrUtil.format(resultFormat, g1, g1);
+            }
+        } else {
+            if (Objects.equals(g2, "Present") && Objects.equals(g1, "Null")) {
+                return StrUtil.format(resultFormat, g2, g1);
+            } else {
+                return StrUtil.format(resultFormat, g1, g2);
+            }
+        }
+    }
+
+    public static String resortGeneResult(String geneResult) {
+        if (StrUtil.isNotEmpty(geneResult)) {
+            return Arrays.stream(geneResult.split("")).sorted().collect(Collectors.joining());
+        }
+        return null;
+    }
+
 
 }
