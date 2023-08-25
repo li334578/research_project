@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.LongAdder;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -905,5 +906,41 @@ public class TestClass03 {
         return null;
     }
 
+    @Test
+    public void testMethod34() {
+        List<String> list = new ArrayList<>();
+        list.add("A");
+        list.add("C");
+        list.add("C");
+        list.add("Q");
+        list.add("Q");
+        list.add("W");
+        list.add("W");
+        for (int i = 0; i < list.size(); i++) {
+            String s1 = list.get(i);
+            if (i != 0) {
+                String s2 = list.get(i - 1);
+                if (Objects.equals(s1, s2)) {
+                    list.remove(i);
+                }
+            }
+        }
+        System.out.println(list);
+        LongAdder longAdder = new LongAdder();
+        longAdder.increment();
+        ConcurrentSkipListMap<String, String> map = new ConcurrentSkipListMap<>();
+        map.put("1", "1");
+    }
+
+    @Test
+    public void testMethod35() {
+        int i = -10;
+        if (i >>> 1 << 1 == i) {
+            System.out.println("偶数");
+        } else {
+            System.out.println("奇数");
+        }
+        System.out.println(i);
+    }
 
 }
