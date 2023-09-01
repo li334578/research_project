@@ -1,6 +1,9 @@
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
+import com.github.rholder.retry.Retryer;
+import com.github.rholder.retry.RetryerBuilder;
+import com.github.rholder.retry.StopStrategies;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -16,6 +19,8 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.LongAdder;
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -941,6 +946,39 @@ public class TestClass03 {
             System.out.println("奇数");
         }
         System.out.println(i);
+    }
+    @Test
+    public void testMethod36() {
+        System.out.println(StrUtil.repeat("0", String.valueOf(1000).length()));
+        System.out.println(StrUtil.repeat("0", String.valueOf(10000).length()));
+        System.out.println(StrUtil.repeat("0", String.valueOf(10).length()));
+    }
+
+    @Test
+    public void testMethod37() {
+        System.out.println(func((a, b) -> a + b, 10, 2));
+        System.out.println(func((a, b) -> a - b, 10, 2));
+        System.out.println(func((a, b) -> a * b, 10, 2));
+        System.out.println(func((a, b) -> a / b, 10, 2));
+        System.out.println(func((a, b) -> Math.max(a, b), 10, 2));
+        System.out.println(func((a, b) -> Math.min(a, b), 10, 2));
+
+
+        System.out.println(func2((a, b) -> a + b, 10, 2));
+        System.out.println(func2((a, b) -> a - b, 10, 2));
+        System.out.println(func2((a, b) -> a * b, 10, 2));
+        System.out.println(func2((a, b) -> a / b, 10, 2));
+        System.out.println(func2((a, b) -> Math.max(a, b), 10, 2));
+        System.out.println(func2((a, b) -> Math.min(a, b), 10, 2));
+
+    }
+
+    public <T> T func(BiFunction<T, T, T> biFunction, T a, T b) {
+        return biFunction.apply(a, b);
+    }
+
+    public <T> T func2(BinaryOperator<T> binaryOperator, T a, T b) {
+        return binaryOperator.apply(a, b);
     }
 
 }
