@@ -981,4 +981,72 @@ public class TestClass03 {
         return binaryOperator.apply(a, b);
     }
 
+    @Test
+    public void testMethod38() {
+        // 队列
+        // 基于链表实现的 双向队列 LinkedList允许元素为null
+        Deque<String> linkedList = new LinkedList<>();
+        linkedList.addFirst("向队首加入元素");
+        linkedList.addLast("向队尾加入元素");
+
+        boolean offerFirst = linkedList.offerFirst("向队首加入元素返回是否插入成功");
+        boolean offerLast = linkedList.offerLast("向队尾加入元素,返回是否插入成功");
+
+        // 返回队头元素(不移除)，队列为empty抛出 NoSuchElementException
+        String getFirst = linkedList.getFirst();
+        // 返回队尾元素(不移除)，队列为empty抛出 NoSuchElementException
+        String getLast = linkedList.getLast();
+
+        // 移除并返回队头元素，队列为empty抛出 NoSuchElementException
+        String first = linkedList.removeFirst();
+        // 移除并返回队尾元素，队列为empty抛出 NoSuchElementException
+        String last = linkedList.removeLast();
+
+        // 移除并返回队头元素，队列为empty 返回null
+        String pollFirst = linkedList.pollFirst();
+        // 移除并返回队尾元素，队列为empty 返回null
+        String pollLast = linkedList.pollLast();
+
+        // 向栈中压入元素
+        linkedList.push("新元素");
+        // 返回并移除队首元素，队列为empty抛出 NoSuchElementException
+        String pop = linkedList.pop();
+
+        System.out.println(linkedList);
+    }
+
+    @Test
+    public void testMethod39() {
+        // 队列
+        // 基于链表实现的 双向队列 ArrayDeque不允许元素为null NPE
+        Deque<String> arrayDeque = new ArrayDeque<>();
+        arrayDeque.addFirst("向队首加入元素");
+        arrayDeque.addLast("向队尾加入元素");
+
+        boolean offerFirst = arrayDeque.offerFirst("向队首加入元素返回是否插入成功");
+        boolean offerLast = arrayDeque.offerLast("向队尾加入元素,返回是否插入成功");
+
+        // 返回队头元素(不移除)，队列为empty抛出 NoSuchElementException
+        String getFirst = arrayDeque.getFirst();
+        // 返回队尾元素(不移除)，队列为empty抛出 NoSuchElementException
+        String getLast = arrayDeque.getLast();
+
+        // 移除并返回队头元素，队列为empty抛出 NoSuchElementException
+        String first = arrayDeque.removeFirst();
+        // 移除并返回队尾元素，队列为empty抛出 NoSuchElementException
+        String last = arrayDeque.removeLast();
+
+        // 移除并返回队头元素，队列为empty 返回null
+        String pollFirst = arrayDeque.pollFirst();
+        // 移除并返回队尾元素，队列为empty 返回null
+        String pollLast = arrayDeque.pollLast();
+
+        // 向栈中压入元素
+        arrayDeque.push("新元素");
+        // 返回并移除队首元素，队列为empty抛出 NoSuchElementException
+        String pop = arrayDeque.pop();
+
+        System.out.println(arrayDeque);
+    }
+
 }
