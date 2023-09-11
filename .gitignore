@@ -60,3 +60,5 @@ maven-wrapper.properties
 spring-configuration-metadata.json
 /research_message_queue/.mvn/wrapper/
 /micro_service_1/.mvn/wrapper/
+/research_project.ipr
+/research_project.iws
