@@ -19,6 +19,9 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.LongAdder;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.LockSupport;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.regex.Pattern;
@@ -224,6 +227,7 @@ public class TestClass03 {
 
     private static final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 10, 60, TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(2000), new ThreadPoolExecutor.CallerRunsPolicy());
+
     @Test
     public void testMethod11() {
         CountDownLatch countDownLatch = new CountDownLatch(50);
@@ -259,6 +263,7 @@ public class TestClass03 {
         threadPoolExecutor.shutdown();
         System.out.println("最终耗时" + (System.currentTimeMillis() - begin) + "毫秒");
     }
+
     @Test
     public void testMethod12() {
         Faker faker = new Faker();
@@ -323,7 +328,7 @@ public class TestClass03 {
 
     private static volatile boolean flag = true;
 
-    public static void main(String[] args) throws InterruptedException{
+    public static void main(String[] args) throws InterruptedException {
         new Thread(() -> {
             while (flag) {
                 // do sth
@@ -456,6 +461,7 @@ public class TestClass03 {
         loadingCache.getUnchecked("key2");
         loadingCache.getUnchecked("key1");
     }
+
     @Test
     public void testMethod18() {
         // weigher 设置权重值 如果所有缓存的key的权重之和大于了我们指定的最大权重，那么将执行LRU淘汰策略：
@@ -883,6 +889,7 @@ public class TestClass03 {
         BigDecimal fivePercent = new BigDecimal("0.05"); // 5%
         return difference.compareTo(fivePercent) <= 0; // 判断绝对差值是否小于等于5%
     }
+
     public String convertResult(String result) {
         if (Objects.equals(result, "Pass") || Objects.equals(result, "Fail")) {
             return result;
@@ -947,6 +954,7 @@ public class TestClass03 {
         }
         System.out.println(i);
     }
+
     @Test
     public void testMethod36() {
         System.out.println(StrUtil.repeat("0", String.valueOf(1000).length()));
@@ -1049,4 +1057,122 @@ public class TestClass03 {
         System.out.println(arrayDeque);
     }
 
+
+    @Test
+    public void testMethod40() {
+        StringBuilder stringBuilder = new StringBuilder("58").append("tongCheng");
+        String str1 = stringBuilder.toString();
+        System.out.println(str1 == str1.intern());
+
+        StringBuilder stringBuilder2 = new StringBuilder("ja").append("va");
+        String str2 = stringBuilder2.toString();
+        System.out.println(str2 == str2.intern());
+    }
+
+    @Test
+    public void testMethod41() {
+        /*
+        给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。
+
+        你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。
+
+        你可以按任意顺序返回答案。
+        * */
+        // leetCode 两数之和
+
+        TestClass03 testClass03 = new TestClass03();
+
+
+        for (int i : testClass03.twoSum(new int[]{2, 7, 11, 15}, 9)) {
+            System.out.println(i);
+        }
+        System.out.println();
+        for (int i : testClass03.twoSum(new int[]{3, 2, 4}, 6)) {
+            System.out.println(i);
+        }
+        System.out.println();
+        for (int i : testClass03.twoSum(new int[]{3, 3}, 6)) {
+            System.out.println(i);
+        }
+
+    }
+
+    public int[] twoSum(int[] nums, int target) {
+        int length = nums.length;
+        if (length == 2) {
+            return nums[0] + nums[1] == target ? new int[]{0, 1} : new int[]{};
+        }
+        for (int i = 0; i < length - 1; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] + nums[j] == target) {
+                    return new int[]{i, j};
+                }
+            }
+        }
+        return new int[]{};
+    }
+
+
+    public int[] twoSum2(int[] nums, int target) {
+        int length = nums.length;
+        if (length == 2) {
+            return nums[0] + nums[1] == target ? new int[]{0, 1} : new int[]{};
+        }
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < length; i++) {
+            int num = target - nums[i];
+            if (map.containsKey(num)) {
+                return new int[]{map.get(num), i};
+            }
+            map.put(nums[i], i);
+        }
+        return new int[]{};
+    }
+
+    @Test
+    public void testMethod42() {
+        Thread a = new Thread(() -> {
+            System.out.printf("%s被阻塞\n", Thread.currentThread().getName());
+            LockSupport.park();
+            System.out.printf("%s被唤醒\n", Thread.currentThread().getName());
+        }, "A");
+        a.start();
+
+        try {
+            Thread.sleep(3000L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Thread b = new Thread(() -> {
+            System.out.printf("%s去唤醒\n", Thread.currentThread().getName());
+            LockSupport.unpark(a);
+        }, "B");
+        b.start();
+    }
+
+    @Test
+    public void testMethod43() {
+        /*Lock lock = new ReentrantLock();
+        lock.lock();*/
+        // 三个线程顺序执行 用lockSupport实现
+        Thread t3 = new Thread(() -> {
+            LockSupport.park();
+            System.out.printf("%s执行了\n", Thread.currentThread().getName());
+        }, "T3");
+        Thread t2 = new Thread(() -> {
+            LockSupport.park();
+            System.out.printf("%s执行了\n", Thread.currentThread().getName());
+            LockSupport.unpark(t3);
+        }, "T2");
+        Thread t1 = new Thread(() -> {
+            System.out.printf("%s执行了\n", Thread.currentThread().getName());
+            LockSupport.unpark(t2);
+        }, "T1");
+        t1.start();
+        t2.start();
+        t3.start();
+
+        ReentrantLock lock = new ReentrantLock();
+        lock.lock();
+    }
 }
