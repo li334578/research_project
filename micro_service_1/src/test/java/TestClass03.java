@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.datafaker.Faker;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.*;
@@ -1175,4 +1176,65 @@ public class TestClass03 {
         ReentrantLock lock = new ReentrantLock();
         lock.lock();
     }
+
+
+    @Test
+    public void testMethod44() throws Exception {
+        // 队列
+        // 基于链表实现的 双向队列 ArrayDeque不允许元素为null NPE
+        LinkedBlockingQueue<String> linkedBlockingQueue = new LinkedBlockingQueue<>();
+        linkedBlockingQueue.remove();
+        System.out.println(linkedBlockingQueue);
+        Class<LinkedBlockingQueue> linkedBlockingQueueClass = LinkedBlockingQueue.class;
+        Constructor<LinkedBlockingQueue> constructor = linkedBlockingQueueClass.getConstructor();
+        LinkedBlockingQueue linkedBlockingQueue1 = constructor.newInstance();
+    }
+
+
+    public static void permutation(String[] arr, int start, int end) {
+        if (start == end) {
+            System.out.println(String.join("", arr));
+        } else {
+            for (int i = start; i <= end; i++) {
+                if (!isDuplicate(arr, start, i)) {
+                    swap(arr, start, i);
+                    permutation(arr, start + 1, end);
+                    swap(arr, start, i);
+                }
+            }
+        }
+    }
+
+    public static boolean isDuplicate(String[] arr, int start, int end) {
+        for (int i = start; i < end; i++) {
+            if (arr[i].equals(arr[end])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void swap(String[] arr, int i, int j) {
+        String temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    @Test
+    public void testMethod45() {
+        String[] arr = {"a", "b", "c"};
+        permutation(arr, 0, arr.length - 1);
+    }
+
+    static {
+        _i = 20;
+    }
+
+    public static int _i = 10;
+
+    @Test
+    public void testMethod46() {
+        System.out.println(TestClass03._i);
+    }
+
 }
