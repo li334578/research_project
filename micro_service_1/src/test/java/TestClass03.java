@@ -1237,4 +1237,35 @@ public class TestClass03 {
         System.out.println(TestClass03._i);
     }
 
+    // @EqualsAndHashCode
+    @Test
+    public void testMethod47() {
+        List<Pair<String, Double>> pairArrayList = new ArrayList<>(2);
+        pairArrayList.add(new Pair<>("version1", 8.3));
+        pairArrayList.add(new Pair<>("version2", null));
+        // 抛出 NullPointerException 异常
+        Map<String, Double> map = pairArrayList.stream()
+                .collect(Collectors.toMap(Pair::getKey, Pair::getValue, (v1, v2) -> v2));
+
+        log.info("123");
+    }
+
+    @Test
+    public void testMethod48() {
+        //初始化
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.add(1);
+        arrayList.add(2);
+        List<Integer> subList = arrayList.subList(1, 2);
+
+        //修改
+        System.out.println(" modify arrayList");
+        arrayList.remove(0);
+
+        //遍历
+        for (Integer integer : subList) {
+            System.out.println(" " + integer);//?????
+        }
+    }
+
 }
