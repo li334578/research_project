@@ -1269,4 +1269,109 @@ public class TestClass03 {
         }
     }
 
+    // Arrays.asList() 不可修改
+
+    /*
+    *   - 如果要从集合中读取类型T的数据，并且不能写入，可以使用 ? extends 通配符；(Producer Extends)
+
+
+          - 如果要从集合中写入类型T的数据，并且不需要读取，可以使用 ? super 通配符；(Consumer Super)
+
+
+          - 如果既要存又要取，那么就不要使用任何通配符。
+    *
+    *
+    * */
+
+    @Test
+    public void testMethod49() {
+        // List<? extends Apple> 必须使用 Apple的子类型List
+        // List<? extends Apple> apples1 = new ArrayList<Fruit>();
+        List<? extends Apple> apples2 = new ArrayList<Apple>();
+        List<? extends Apple> apples3 = new ArrayList<RedApple>();
+        apples3.add(null);
+        /*
+        apples3.add(new Fruit());
+        apples3.add(new Apple());
+        apples3.add(new RedApple());
+        编译失败 ? extends add()方法编译报错 get()方法编译通过
+         */
+        Apple apple = apples3.get(0);
+        Fruit fruit = apples3.get(0);
+
+        List<? super Apple> apples4 = new ArrayList<Fruit>();
+        List<? super Apple> apples5 = new ArrayList<Apple>();
+        // List<? super Apple> apples6 = new ArrayList<RedApple>();
+        apples4.add(new RedApple());
+        apples4.add(new Apple());
+        // apples4.add(new Fruit());
+        // Apple object = apples4.get(0); 错误
+        // Fruit object = apples4.get(0); 错误
+        Object object = apples4.get(0);
+        // PE (producer extends) 生产者使用 extends, 上界确定，读取优良(用Apple接收)，下界不定，写入不行(只能存null)，写入读多写少(生产者读取了才能进行生产)
+        // CS (customer super) 消费使用 super, 上界不定，读取不行(只能用Object接收)，下界确定，写入优良(可以写入Apple与Apple的子类型)，写多读少(消费者消费了要进行写入)
+        List<RedApple> redApples = new ArrayList<>();
+
+        method(redApples);
+
+        /*
+        *
+        *
+        * 【推荐】使用 entrySet 遍历 Map 类集合 KV，而不是 keySet 方式进行遍历。
+            说明：keySet 其实是遍历了 2 次，一次是转为 Iterator 对象，另一次是从 hashMap 中取出 key 所对应的 value。而
+            entrySet 只是遍历了一次就把 key 和 value 都放到了 entry 中，效率更高。如果是 JDK8，使用 Map.forEach 方法。
+            正例：values() 返回的是 V 值集合，是一个 list 集合对象；keySet() 返回的是 K 值集合，是一个 Set 集合对象；entrySet() 返回的是 K-V 值组合的 Set 集合。
+        * */
+        /**
+         * 通过双重检查锁（double-checked locking），实现延迟初始化需要将目标属性声明为volatile 型
+         * 指令重排优化，并发线程环境下，可能会获取到一个未初始化完成的对象
+         * count ++ 操作使用 LongAdder
+         *
+         *
+         * 【强制】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。
+         * 说明：Executors 返回的线程池对象的弊端如下：
+         * 1）FixedThreadPool 和 SingleThreadPool：
+         * 允许的请求队列长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。
+         * 2）CachedThreadPool：
+         * 允许的创建线程数量为 Integer.MAX_VALUE，可能会创建大量的线程，从而导致 OOM。
+         * 3）ScheduledThreadPool：
+         * 允许的请求队列长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。
+         *
+         * 【强制】SimpleDateFormat 是线程不安全的类，一般不要定义为 static 变量，如果定义为 static，必须加锁，或者使用 DateUtils 工具类。
+         * 正例：注意线程安全，使用 DateUtils。亦推荐如下处理：
+         *
+         * private static final ThreadLocal<DateFormat> dateStyle = new ThreadLocal<DateFormat>() { @Override
+         *   protected DateFormat initialValue() {
+         *     return new SimpleDateFormat("yyyy-MM-dd");
+         *   }
+         * };
+         *
+         * 如果是 JDK8 的应用，可以使用 Instant 代替 Date，LocalDateTime 代替 Calendar，DateTimeFormatter 代替SimpleDateFormat，官方给出的解释：simple beautiful strong immutable thread-safe。
+         *
+         *
+         * 必须回收自定义的 ThreadLocal 变量记录的当前线程的值，尤其在线程池场景下，线程经常会被复用，如果不清理自定义的 ThreadLocal 变量，可能会影响后续业务逻辑和造成内存泄露等问题。尽量在代码中使用 try-finally 块进行回收。
+         *
+         *
+         * 超过 3 层的 if-else 的逻辑判断代码可以使用卫语句、策略模式、状态模式等来实现，其中卫语句示例如下：
+         * 开接口需要进行入参保护，尤其是批量操作的接口。
+         * 【推荐】代码修改的同时，注释也要进行相应的修改，尤其是参数、返回值、异常、核心逻辑等。
+         * 说明：代码与注释更新不同步，就像公路网与导航软件更新不同步一样，如果导航软件严重滞后，就失去了导航的意义
+         * 在类中删除未使用的任何字段和方法、内部类；在方法中删除未使用的参数声明与内部变量。
+         * */
+    }
+
+
+    public void method(List<? extends Apple> list) {
+
+    }
+
+}
+
+class Fruit {
+}
+
+class Apple extends Fruit {
+}
+
+class RedApple extends Apple {
 }
